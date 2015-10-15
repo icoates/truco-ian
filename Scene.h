@@ -12,15 +12,19 @@ class Scene
 	Background * m_bg;
 	std::map<int, Carta *> imagenes;
 	DropTargetList* targetList;
+	
 public:
+	
 	Scene();
 	void SetBackGround(Background *);
+	void DeleteObj();
+	Background * getBackGround(){ return m_bg; };
 	void AddTarget(BoxTarget *);
 	void AddCarta(int indice, int nroCarta);
 	//void RemovePlayer(std::string);
-	void CleanUp();
+	virtual void CleanUp();
 	//Player *GetPlayer(std::string);
-	void Render();
+	virtual void Render();
 	void Update();
 	void Move();
 	void HitTest(float, float);
