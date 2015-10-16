@@ -2,37 +2,37 @@
 #define __SCENE__
 
 #include "background.h"
-#include "Carta.h"
-#include "BoxTarget.h"
+
 #include <map>	//ojo que esto estaba en player
+#include "PointerProxy.h"
+#include "SceneParamBean.h"
 
 class Scene
 {
 	
-	Background * m_bg;
-	std::map<int, Carta *> imagenes;
-	DropTargetList* targetList;
-	
+	Background * m_bg;	
+	bool action = false;
+	SceneParamBean * param;
+
 public:
 	
 	Scene();
 	void SetBackGround(Background *);
 	void DeleteObj();
 	Background * getBackGround(){ return m_bg; };
-	void AddTarget(BoxTarget *);
-	void AddCarta(int indice, int nroCarta);
-	//void RemovePlayer(std::string);
+	
+	
 	virtual void CleanUp();
-	//Player *GetPlayer(std::string);
+	void RenderBG();
 	virtual void Render();
-	void Update();
+	virtual bool HitTest(float x, float y);
+	virtual void Update();
 	void Move();
-	void HitTest(float, float);
-	virtual void onHit(std::string){}
-	virtual void Touch(int, float, float){}
-	virtual void OnUpdate(){}
-	virtual void OnMoved(){}
-	virtual void OnRender(){}
+	bool GetAction(){ return action; }
+	void SetAction(bool eaction){ action = eaction; }
+	void SetParamBean(int, int);
+	SceneParamBean * GetParamBean(){ return param; }
+	void ResetAction();
 };
 
 #endif

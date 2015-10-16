@@ -5,13 +5,15 @@
 #include "Iw2D.h"
 #include <string>
 #include <map>
+#include "scene.h"
 
-class Scene;
 class GameController
 {
 private:
 	std::map<std::string, Scene*> m_scenes;
 	std::string currentScene;
+	
+	
 public:
 	GameController();
 	~GameController();
@@ -20,6 +22,8 @@ public:
 	std::string GetCurrentScene();
 	void CleanUp();
 	void Render();	
+	void Update();
 	Scene* GetScene(std::string);
+	void TirarCarta(SceneParamBean * param);
 };
 

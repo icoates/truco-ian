@@ -29,13 +29,13 @@ public:
 			return true;
 		return false;
 	}
-	int GetOrden();
+	int GetNroCarta() { return nroCarta; }
 	std::string GetPath();
 	CIwFVec2 GetPos();
 	CIwFVec2 GetOffset();
 	CIwFVec2 GetSize();
 	void BajarPoco();
 	void Render();
-	
+	bool GetShow(){ return showCarta; }
 };
 

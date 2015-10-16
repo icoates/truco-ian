@@ -1,5 +1,6 @@
 #include "GameController.h"
-#include "scene.h"
+
+
 
 GameController::GameController()
 {
@@ -9,6 +10,7 @@ GameController::GameController()
 GameController::~GameController()
 {
 }
+
 
 void GameController::AddScene(std::string id, Scene *scene)
 {
@@ -50,3 +52,28 @@ void GameController::Render()
 {
 	m_scenes[currentScene]->Render();
 }
+
+void GameController::TirarCarta(SceneParamBean * param){
+	int jugador = param->GetPlayer();
+	int carta = param->GetCarta();
+
+	//Segun el jugador tengo que posicionar la carta en un distinto lugar y borrar una de la cantidad que tenga en la mesaScene
+
+}
+
+
+void GameController::Update(){
+	m_scenes[currentScene]->Update();
+	if (m_scenes[currentScene]->GetAction() && currentScene == "mesa"){
+		m_scenes[currentScene]->SetAction(false);
+		currentScene = "mano";
+		return;
+	}
+	else if (m_scenes[currentScene]->GetAction() && currentScene == "mano"){
+//		TirarCarta(m_scenes[currentScene]->GetParamBean());
+		m_scenes[currentScene]->ResetAction();
+		currentScene = "mesa";
+		return;
+	}
+}
+
