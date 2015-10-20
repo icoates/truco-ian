@@ -1,42 +1,44 @@
 #include "ManoScene.h"
 
 ManoScene::ManoScene(){
-	targetList = new DropTargetList;
+	
 };
 
 void ManoScene::init(int cuno, int cdos, int ctres){
 	gDragDropManager = new DragDropManager();
-
+	targetList = new DropTargetList;
 	target = new BoxTarget("abrir.png", CIwFVec2(400, 220));
-	AddTarget(target);
-	AddCarta(1, cuno);
-	AddCarta(2, cdos);
+	targetList->Add(target);
+	
+	AddCarta(1, cuno);	
+	AddCarta(2, cdos);	
 	AddCarta(3, ctres);
-
 
 }
 
 void ManoScene::Update(){
 	PointerProxy *proxy = PointerProxy::singleton();
 	// consume up/down events
-	TouchInfoDeque::iterator itr;
-	for (itr = proxy->ClickEvents.begin(); itr != proxy->ClickEvents.end(); ++itr)
-	{
-		if (itr->active)
-			gDragDropManager->BeginDragging(MouseEventInfo(itr->id, itr->x, itr->y, ButtonDown));
-		else
-			gDragDropManager->EndDragging(MouseEventInfo(itr->id, itr->x, itr->y, ButtonUp));
-	}
-	proxy->ClickEvents.clear();
+	if (!gDragDropManager->Draggables.empty()){
+		TouchInfoDeque::iterator itr;
+		for (itr = proxy->ClickEvents.begin(); itr != proxy->ClickEvents.end(); ++itr)
+		{
+			if (itr->active)
+				gDragDropManager->BeginDragging(MouseEventInfo(itr->id, itr->x, itr->y, ButtonDown));
+			else
+				gDragDropManager->EndDragging(MouseEventInfo(itr->id, itr->x, itr->y, ButtonUp));
+		}
+		proxy->ClickEvents.clear();
 
-	// also feed motion only when position changes
-	for (itr = proxy->MoveEvents.begin(); itr != proxy->MoveEvents.end(); ++itr)
-	{
-		if (itr->active)
-			gDragDropManager->UpdateDragging(MouseEventInfo(itr->id, itr->x, itr->y, ActiveMotion));
+		// also feed motion only when position changes
+		for (itr = proxy->MoveEvents.begin(); itr != proxy->MoveEvents.end(); ++itr)
+		{
+			if (itr->active)
+				gDragDropManager->UpdateDragging(MouseEventInfo(itr->id, itr->x, itr->y, ActiveMotion));
+		}
+		proxy->MoveEvents.clear();
+		CheckCartas();
 	}
-	proxy->MoveEvents.clear();
-	CheckCartas();
 }
 
 void ManoScene::Render(){
@@ -46,11 +48,7 @@ void ManoScene::Render(){
 		it->second->Render();
 	}
 
-	std::list<DropTarget*>::iterator itr;
-	for (itr = targetList->List.begin(); itr != targetList->List.end(); ++itr)
-	{
-		((BoxTarget *)(*itr))->Render();
-	}
+	target->Render();
 }
 void ManoScene::CheckCartas(){
 	for (std::map<int, Carta *>::iterator it = imagenes.begin(); it != imagenes.end(); ++it){
@@ -58,13 +56,24 @@ void ManoScene::CheckCartas(){
 			SetAction(true);
 			//Aca se deberia pasar el jugador por ahora para pruebas siempre es el 1
 			SetParamBean(1, it->first);
-			delete it->second;
+			//gDragDropManager->Draggables.erase()
+			DraggableList::iterator itr;
+			for (itr = gDragDropManager->Draggables.begin(); itr != gDragDropManager->Draggables.end(); itr++){
+				if (((Carta *)(*itr))->GetNroCarta() == it->second->GetNroCarta()){
+					gDragDropManager->Draggables.erase(itr);
+					break;
+				}
+			} 
+			delete it->second;  
+			
+		
 			imagenes.erase(it->first);
+			   
 			//solo se jueaga de a una
 			break;
 		}
 	}
-}
+} 
 
 void ManoScene::CleanUp(){
 	DeleteObj();
@@ -74,23 +83,14 @@ void ManoScene::CleanUp(){
 		delete it->second;
 	}
 
-	std::list<DropTarget*>::iterator itr;
-	for (itr = targetList->List.begin(); itr != targetList->List.end(); ++itr)
-	{
-		delete (BoxTarget *)(*itr);
-	}
-
-
+	delete target;
 	delete targetList;
-
-
+	
+	
 	imagenes.clear();
 }
 
-void ManoScene::AddTarget(BoxTarget * target){
-	targetList->Add(target);
 
-}
 
 void ManoScene::AddCarta(int indice, int nroCarta){
 	//permite meter repetidas pero no debería ser problema
@@ -108,9 +108,9 @@ void ManoScene::AddCarta(int indice, int nroCarta){
 		oCar->init(20, 48, nroCarta);
 	}
 	imagenes.insert(std::pair<int, Carta *>(indice, oCar));
-
+	
 	gDragDropManager->Draggables.push_back(imagenes[indice]);
-
+	
 
 
 }

@@ -9,15 +9,17 @@ private:
 	int nroCarta;
 	bool showCarta;
 	std::string strPath;
+	CIwFVec2 size;
 	CIwFVec2 pos;
 	CIwFVec2 offset;
 	CIwFVec2 tamaño;
 	CIw2DImage *imag;
+	std::string transform = "none";
 
 public:
 	Carta(DropTargetList* targetList);
 	~Carta();
-	void init(float posx, float posy, int nroCarta);
+	void init(float posx, float posy, int nroCarta );
 	void IsInDrop(){ showCarta = false; };
 	
 	bool IsInside(CIwFVec2 posi)
@@ -25,7 +27,7 @@ public:
 		float diffx = posi.x - pos.x;
 		float diffy = posi.y - pos.y;
 
-		if (diffx>0 && diffx < imag->GetWidth() && diffy>0 && diffy< imag->GetHeight())
+		if (diffx>0 && diffx < tamaño.x && diffy>0 && diffy < tamaño.y)
 			return true;
 		return false;
 	}

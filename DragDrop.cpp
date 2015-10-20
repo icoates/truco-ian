@@ -62,7 +62,7 @@ void Draggable::CheckDropTargets()
 			IsInDrop();
 			break;
 		}
-			
+			 
 	}
 }
 
@@ -80,22 +80,26 @@ DragDropManager::~DragDropManager()
 
 void DragDropManager::BeginDragging(MouseEventInfo mouse)
 {
-	CIwFVec2 pos( mouse.X, mouse.Y);
+	CIwFVec2 pos( (float) mouse.X,(float) mouse.Y);
 	
 	DraggableList::iterator itr;
-	for (itr = Draggables.end(); itr != nullptr; --itr){
+	bool flag = true;
+	for (itr = Draggables.end(); flag; --itr){
 		if (itr == Draggables.end()) --itr;
 		if (!(*itr)->IsDragging() && (*itr)->IsInside(pos))
 		{
 			(*itr)->BeginDrag(pos);
 			break; // added in code review , not tested. ideally drag only 1 obj
 		}
+		if (itr == Draggables.begin())
+			flag = false;
+		
 	}
 }
 
 void DragDropManager::UpdateDragging(MouseEventInfo mouse)
 {
-	CIwFVec2 pos(mouse.X, mouse.Y);
+	CIwFVec2 pos((float) mouse.X,(float) mouse.Y);
 	
 	DraggableList::iterator itr;
 	for(itr=Draggables.begin(); itr!=Draggables.end(); ++itr)
@@ -103,10 +107,10 @@ void DragDropManager::UpdateDragging(MouseEventInfo mouse)
 			(*itr)->UpdateDrag( pos );
 			
 }
-
+ 
 void DragDropManager::EndDragging(MouseEventInfo mouse)
 {
-	CIwFVec2 pos(mouse.X, mouse.Y);
+	CIwFVec2 pos((float) mouse.X, (float) mouse.Y);
 	
 	DraggableList::iterator itr;
 	for(itr=Draggables.begin(); itr!=Draggables.end(); ++itr)
