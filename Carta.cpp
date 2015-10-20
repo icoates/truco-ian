@@ -12,6 +12,7 @@ Carta::~Carta()
 	if (imag != NULL){
 		delete imag;
 	}
+
 }
 
 

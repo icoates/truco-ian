@@ -22,9 +22,6 @@ public:
 
 		if (diffx>0 && diffx < Pozo->GetWidth() && diffy>0 && diffy< Pozo->GetHeight())		
 		{
-			//Aqui debe ir el codigo de tire la carta
-			//Position.x = rand() % 240 + 20;
-			//Position.y = rand() % 240 + 20;
 			return true;
 		}
 		return false;

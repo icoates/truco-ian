@@ -32,7 +32,9 @@ public:
 		: isDragging(false), targets(0)
 	{}
 	~Draggable(void)
-	{}
+	{
+		
+	}
 
 	virtual bool IsInside(CIwFVec2 pos)=0;
 	virtual void IsInDrop()=0;
