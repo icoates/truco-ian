@@ -9,13 +9,19 @@ Background::Background()
 
 Background::~Background()
 {
-	if (bg != NULL)
-		delete bg;
+	//if (bg != NULL)
+	//	delete bg;
 }
 
 void Background::Init(std::string path, float w, float h)
 {
-	bg = Iw2DCreateImage(path.c_str());
+	if (!gpResources)
+		gpResources = Resources::singleton();
+
+	if (path == "mesa")
+		bg = gpResources->getMesa();
+	else if (path == "mano")
+		bg = gpResources->getFieltro();
 	width = w;
 	height = h;
 	

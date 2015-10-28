@@ -4,7 +4,7 @@
 Scene::Scene()
 {
 	m_bg = NULL;
-	
+	param = nullptr;
 }
 
 void Scene::SetBackGround(Background *bg)
@@ -16,8 +16,6 @@ void Scene::SetBackGround(Background *bg)
 void Scene::DeleteObj(){
 	if (m_bg != NULL)
 		delete m_bg;
-
-
 	
 }
 void Scene::CleanUp()
@@ -48,6 +46,9 @@ void Scene::Render()
 	RenderBG();	
 }
 
+void Scene::DoAction(SceneParamBean * scm){
+
+}
 bool Scene::HitTest(float x, float y)
 {
 	return false;
@@ -61,6 +62,6 @@ void Scene::SetParamBean(int jugador, int carta){
 
 void Scene::ResetAction(){
 	action = false;
-	if (param!=NULL)
+	if (param!=nullptr)
 		delete param;
 }

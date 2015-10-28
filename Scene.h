@@ -27,6 +27,7 @@ public:
 	virtual void Render();
 	virtual bool HitTest(float x, float y);
 	virtual void Update();
+	virtual void DoAction(SceneParamBean *);
 	void Move();
 	bool GetAction(){ return action; }
 	void SetAction(bool eaction){ action = eaction; }

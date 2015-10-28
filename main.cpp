@@ -3,23 +3,25 @@
 #include "IwDebug.h"
 #include "PointerProxy.h"
 #include "GameController.h"
-#include "ManoScene.h"
-#include "MesaScene.h"
 
 
-void Initialize()
+
+void Initialize() 
 {
-	//Initialise graphics system(s)
+	//Initialise graphics system(s) 
 	IwGxInit();
 	Iw2DInit();
 	// register for touch callbacks with marmalade system
 	PointerProxy::singleton()->RegisterCallbacks();
-}
-
-void Terminate()
+}  
+ 
+void Terminate()  
 {
 	delete gDragDropManager;
-	
+	  
+	 
+	Resources::singleton()->DestroySingleton(); 
+
 	PointerProxy::singleton()->Unregister();
 	PointerProxy::singleton()->DestroySingleton();
 
@@ -34,29 +36,29 @@ int main()
 
 
 	Background *bg = new Background();
-	bg->Init("fieltro2.jpg", (float)Iw2DGetSurfaceWidth(), (float)Iw2DGetSurfaceHeight());
+	bg->Init("mano", (float)Iw2DGetSurfaceWidth(), (float)Iw2DGetSurfaceHeight());
 	ManoScene *ms = new ManoScene();
 	
 	ms->SetBackGround(bg);
-	ms->init(2, 4, 5);
+	//ms->init(2, 4, 5);
 	
 	Background *bg2 = new Background();
-	bg2->Init("mesa.png", (float)Iw2DGetSurfaceWidth(), (float)Iw2DGetSurfaceHeight());
+	bg2->Init("mesa", (float)Iw2DGetSurfaceWidth(), (float)Iw2DGetSurfaceHeight());
 	MesaScene *mesa = new MesaScene();
 	mesa->SetBackGround(bg2);
-	mesa->init();
+	//mesa->init();
 	GameController *game = new GameController();
 	game->AddScene("mano",ms);
-	game->AddScene("mesa", mesa);
+	game->AddScene("mesa", mesa); 
 	game->SetScene("mesa");
-	
-	while (!s3eDeviceCheckQuitRequest()){
-
-		//Update the input systems
-		s3eKeyboardUpdate();
-		s3ePointerUpdate();
-		 		
-		game->Update();
+	game->InitMano();
+	while (!s3eDeviceCheckQuitRequest()){ 
+		 
+		//Update the input systems 
+		s3eKeyboardUpdate(); 
+		s3ePointerUpdate(); 
+		 		  
+		game->Update(); 
 
 		IwGxClear(IW_GX_COLOUR_BUFFER_F | IW_GX_DEPTH_BUFFER_F);
 		game->Render();
@@ -66,11 +68,12 @@ int main()
 		IwGxFlush();
 		IwGxSwapBuffers();
 		s3eDeviceYield();
-	}
+	} 
 	game->CleanUp();
 	delete ms;
 	delete mesa;
 	delete game;
+	
 	Terminate();
 
 	return 0;

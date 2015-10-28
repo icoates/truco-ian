@@ -4,16 +4,16 @@ ManoScene::ManoScene(){
 	
 };
 
-void ManoScene::init(int cuno, int cdos, int ctres){
+void ManoScene::init(){
 	gDragDropManager = new DragDropManager();
 	targetList = new DropTargetList;
 	target = new BoxTarget("abrir.png", CIwFVec2(400, 220));
 	targetList->Add(target);
-	
+	/*
 	AddCarta(1, cuno);	
 	AddCarta(2, cdos);	
 	AddCarta(3, ctres);
-
+	*/
 }
 
 void ManoScene::Update(){
@@ -55,7 +55,7 @@ void ManoScene::CheckCartas(){
 		if (it->second->GetShow()==false){
 			SetAction(true);
 			//Aca se deberia pasar el jugador por ahora para pruebas siempre es el 1
-			SetParamBean(1, it->first);
+			SetParamBean(1, it->second->GetNroCarta());
 			//gDragDropManager->Draggables.erase()
 			DraggableList::iterator itr;
 			for (itr = gDragDropManager->Draggables.begin(); itr != gDragDropManager->Draggables.end(); itr++){
@@ -64,12 +64,10 @@ void ManoScene::CheckCartas(){
 					break;
 				}
 			} 
-			delete it->second;  
-			
-		
+			delete it->second;
 			imagenes.erase(it->first);
 			   
-			//solo se jueaga de a una
+			//solo se juega de a una
 			break;
 		}
 	}
@@ -94,7 +92,7 @@ void ManoScene::CleanUp(){
 
 void ManoScene::AddCarta(int indice, int nroCarta){
 	//permite meter repetidas pero no debería ser problema
-	nroCarta--;
+	
 
 
 	Carta* oCar = new Carta(targetList);

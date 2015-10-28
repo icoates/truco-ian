@@ -12,7 +12,7 @@ class ManoScene : public Scene
 	
 public:
 	ManoScene();
-	void init(int uno, int cdos, int ctres);
+	void init();
 	void Update();
 	void Render();
 	void CleanUp();
