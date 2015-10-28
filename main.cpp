@@ -18,7 +18,7 @@ void Initialize()
 void Terminate()  
 {
 	delete gDragDropManager;
-	
+	  
 	 
 	Resources::singleton()->DestroySingleton(); 
 

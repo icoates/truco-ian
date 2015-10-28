@@ -87,7 +87,7 @@ void Carta::Render(){
 			BeginDrag(GetLastPosition());
 		}
 		
-		if (transform != IW_2D_IMAGE_TRANSFORM_ROT180){
+		if (nroRot == 0){
 			Iw2DSetImageTransform(transform);
 			if (this->imag != nullptr){
 				Iw2DDrawImageRegion(this->imag, this->pos, this->size, this->offset, this->tamanio);
@@ -97,11 +97,11 @@ void Carta::Render(){
 		{ 
 			CIwFMat2D lMatrix;
 			//IwDebugTraceLinePrintf("MUESTRA: %d", nroCarta);
-			lMatrix.SetRot(135 * PI / 180, CIwFVec2(pos.x+(size.x/2),  pos.y+(size.y/2)));
+			lMatrix.SetRot(nroRot * PI / 180, CIwFVec2(pos.x+(size.x/2),  pos.y+(size.y/2)));
 			Iw2DSetTransformMatrix(lMatrix);
 			
 			if (this->imag != nullptr){
-				Iw2DDrawImageRegion(this->imag, this->pos, CIwFVec2(size.y/2,size.x/2), this->offset, this->tamanio);
+				Iw2DDrawImageRegion(this->imag, this->pos, CIwFVec2(size.x,size.y), this->offset, this->tamanio);
 			}
 
 		}

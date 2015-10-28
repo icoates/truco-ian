@@ -5,13 +5,13 @@
 GameController::GameController()
 {
 	//Esto en realidad se deberá hacer con las comunicación a efectos de hacer pruebas se pone aquí
-	currentPlayer = new Player("Ian", 4, true);
+	currentPlayer = new Player("Ian", 4, false);
 	jugadores.insert(std::pair<int, Player *>(1, currentPlayer));
 	Player * temp = new Player("Ricca", 3, false);
 	jugadores.insert(std::pair<int, Player *>(2, temp));
 	temp = new Player("Peter", 2, false);
 	jugadores.insert(std::pair<int, Player *>(3, temp));
-	temp = new Player("Taru", 1, false);
+	temp = new Player("Taru", 1, true);
 	jugadores.insert(std::pair<int, Player *>(4, temp));
 }
 

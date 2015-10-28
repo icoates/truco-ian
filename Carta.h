@@ -14,6 +14,7 @@ class Carta : public Draggable
 {
 private:
 	int nroCarta;
+	int nroRot=0;
 	bool showCarta;
 	//std::string strPath;
 	CIwFVec2 size;
@@ -51,7 +52,9 @@ public:
 	void SetSize(CIwFVec2 pSize) { size = pSize; }
 	void SetOffset(CIwFVec2 pOffset){ offset = pOffset; }
 	void SetTamanio(CIwFVec2 pTam) { tamanio = pTam; }
-
+	void SetRot(int pRot){
+		nroRot = pRot;
+	}
 	//Funciones
 	void Render();	
 	void SetTransformation(CIw2DImageTransform 	pTransform);

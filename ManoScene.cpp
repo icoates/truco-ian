@@ -55,7 +55,7 @@ void ManoScene::CheckCartas(){
 		if (it->second->GetShow()==false){
 			SetAction(true);
 			//Aca se deberia pasar el jugador por ahora para pruebas siempre es el 1
-			SetParamBean(2, it->second->GetNroCarta());
+			SetParamBean(1, it->second->GetNroCarta());
 			//gDragDropManager->Draggables.erase()
 			DraggableList::iterator itr;
 			for (itr = gDragDropManager->Draggables.begin(); itr != gDragDropManager->Draggables.end(); itr++){
