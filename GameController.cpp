@@ -67,8 +67,21 @@ void GameController::Render()
 	m_scenes[currentScene]->Render();
 }
 
+int GameController::GetNroJugadorRelativo(int nroJugador){
+	int iDiff = 5 - currentPlayer->GetNroJugador();
+	if (nroJugador + iDiff == 4)
+		return 4;
+	return (nroJugador + iDiff)%4;
+	return 0;
+}
 
-
+void GameController::TirarCarta(int jugador, int carta){
+	SceneParamBean * scm = new SceneParamBean();
+	scm->SetPlayer(GetNroJugadorRelativo(jugador));
+	scm->SetCarta(carta);
+	m_scenes["mesa"]->DoAction(scm);
+	delete scm;
+}
 void GameController::Update(){
 	m_scenes[currentScene]->Update();
 	if (m_scenes[currentScene]->GetAction() && currentScene == "mesa"){
@@ -78,13 +91,16 @@ void GameController::Update(){
 	}
 	else if (m_scenes[currentScene]->GetAction() && currentScene == "mano"){
 		m_scenes["mesa"]->DoAction(m_scenes[currentScene]->GetParamBean());
-		
+		TirarCarta(1,14);
+		TirarCarta(2,13);
+		TirarCarta(3, 15);
 //		TirarCarta(m_scenes[currentScene]->GetParamBean());
 		m_scenes[currentScene]->ResetAction();
 		currentScene = "mesa";
 		return;
 	}
 }
+
 
 void GameController::InitMaso(){
 	std::map<int, int> tempMaso;

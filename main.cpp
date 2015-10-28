@@ -4,13 +4,13 @@
 #include "PointerProxy.h"
 #include "GameController.h"
 
-
+ 
 
 void Initialize() 
 {
 	//Initialise graphics system(s) 
-	IwGxInit();
-	Iw2DInit();
+	IwGxInit(); 
+	Iw2DInit(); 
 	// register for touch callbacks with marmalade system
 	PointerProxy::singleton()->RegisterCallbacks();
 }  

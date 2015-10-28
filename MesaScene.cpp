@@ -147,7 +147,7 @@ void MesaScene::CleanUp(){
 	DeleteObj();
 
 	for (std::map<unsigned int, Carta *>::iterator it = m_cartas.begin(); it != m_cartas.end(); ++it){
-		//IwDebugTraceLinePrintf("MUESTRA: %d", it->first);
+//		IwDebugTraceLinePrintf("MUESTRA: %d", it->first);
 		if (it->second != nullptr)
 			delete it->second;
 	}

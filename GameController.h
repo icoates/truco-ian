@@ -17,6 +17,8 @@ private:
 
 	void InitMaso();
 	void Repartir();
+	int GetNroJugadorRelativo(int nroJugador);
+	void TirarCarta(int jugador, int carta);
 	int nroJugadorReparte();
 public:
 	GameController();
