@@ -6,39 +6,75 @@ Carta::Carta(DropTargetList* targetList)
 	SetTargetList(targetList);
 }
 
-
+ 
 Carta::~Carta()
 {
-	if (imag != NULL){
-		delete imag;
-	}
+	//if (imag != NULL){
+	//	delete imag;
+	//}
 
 }
 
 
-void Carta::init(float posx, float posy, int nroCt){
+void Carta::init(float posx, float posy, int nroCt){ 
+	if (!gpResources)
+		gpResources = Resources::singleton();
+
 	this->pos =  CIwFVec2(posx, posy);
 	this->nroCarta = nroCt;
-	int posCarta = 0;
-	if (nroCarta < 11){
-		posCarta = nroCarta;
-		this->strPath = "map-bastos2.png";
+	if (nroCarta == 0){
+		imag = gpResources->getReves();
+		//strPath = "reves2.png";
+		offset = CIwFVec2(0, 0);
+		float rwidth = RevesWidth;
+		float rHeight = RevesHeight;
+		float prop = (float)Iw2DGetSurfaceWidth() / rwidth;
+		float fixpropx = prop*rwidth / 12;
+		float fixpropy = rHeight*prop / 12;
+		tamanio = CIwFVec2(rwidth, rHeight);
+		size = CIwFVec2(fixpropx,fixpropy);
 	}
-	else if (nroCarta < 21){
-		posCarta = nroCarta % 10;
-		this->strPath = "map-copas.png";
+	else if (nroCarta == 41){
+		imag = gpResources->getMaso();
+		//strPath = "maso2.png";  
+		offset = CIwFVec2(0, 0); 
+		float mwidth = MasoWidth; 
+		float mHeight = MasoHeight;
+		float prop = (float)Iw2DGetSurfaceWidth() / mwidth;
+		float fixpropx = prop*mwidth / prop;
+		float fixpropy = mHeight*prop / prop;
+		tamanio = CIwFVec2(mwidth, mHeight);
+		size = CIwFVec2(fixpropx, fixpropy);
 	}
-	else if (nroCarta < 31){
-		posCarta = nroCarta % 20;
-		this->strPath = "map-espadas.png";
+	else{ 
+		int posCarta = 0;
+		if (nroCarta < 11){
+			posCarta = nroCarta-1;
+			imag = gpResources->getBastos();
+			//this->strPath = "map-bastos2.png";
+		}
+		else if (nroCarta < 21){
+			posCarta = nroCarta % 10-1;
+			imag = gpResources->getCopas();
+			//this->strPath = "map-copas.png";
+		}
+		else if (nroCarta < 31){
+			posCarta = nroCarta % 20-1;
+			imag = gpResources->getEspadas();
+			//this->strPath = "map-espadas.png";
+		}
+		else {
+			posCarta = nroCarta % 30-1;
+			imag = gpResources->getOros();
+			//this->strPath = "map-oros.png";
+		}
+		float cWidth = CartaWidth;
+		float cHeight = CartaHeight;
+		this->offset = CIwFVec2((float)posCarta * cWidth, 0);
+		this->tamanio = CIwFVec2(cWidth, cHeight);
+		this->size = CIwFVec2(cWidth, cHeight);
 	}
-	else {
-		posCarta = nroCarta % 30;
-		this->strPath = "map-oros.png";
-	}
-	this->offset = CIwFVec2(posCarta * 144, 0);
-	this->tamaño = CIwFVec2(144, 226);
-	this->imag = Iw2DCreateImage(this->strPath.c_str());
+	//this->imag = Iw2DCreateImage(this->strPath.c_str());
 	showCarta = true;
 }
 
@@ -50,10 +86,36 @@ void Carta::Render(){
 			pos.y += temp.y;
 			BeginDrag(GetLastPosition());
 		}
-
-
-		if (this->imag != nullptr){
-			Iw2DDrawImageRegion(this->imag, this->pos, this->offset, this->tamaño);
+		
+		if (transform != IW_2D_IMAGE_TRANSFORM_ROT180){
+			Iw2DSetImageTransform(transform);
+			if (this->imag != nullptr){
+				Iw2DDrawImageRegion(this->imag, this->pos, this->size, this->offset, this->tamanio);
+			}
 		}
+		else
+		{ 
+			CIwFMat2D lMatrix;
+			//IwDebugTraceLinePrintf("MUESTRA: %d", nroCarta);
+			lMatrix.SetRot(135 * PI / 180, CIwFVec2(pos.x+(size.x/2),  pos.y+(size.y/2)));
+			Iw2DSetTransformMatrix(lMatrix);
+			
+			if (this->imag != nullptr){
+				Iw2DDrawImageRegion(this->imag, this->pos, CIwFVec2(size.y/2,size.x/2), this->offset, this->tamanio);
+			}
+
+		}
+
+
+		
+		Iw2DSetTransformMatrix(CIwFMat2D::g_Identity);
+	}
+}
+
+void Carta::SetTransformation(CIw2DImageTransform pTransform){
+	transform = pTransform;
+	
+	if (transform == IW_2D_IMAGE_TRANSFORM_ROT90 || transform== IW_2D_IMAGE_TRANSFORM_ROT270){
+		size = CIwFVec2(size.y, size.x);
 	}
 }

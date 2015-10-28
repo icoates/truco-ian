@@ -1,7 +1,8 @@
 #pragma once
-#include "Iw2D.h" //ojo esto venia de game
+
 #include "IwGx.h" //ojo esto venia de game
 #include <string> //ojo que esto estaba en player
+#include "Resources.h"
 
 class Background
 {

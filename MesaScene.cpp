@@ -10,113 +10,108 @@ MesaScene::~MesaScene(){
 
 }
 
-void MesaScene::init(){
-	CIw2DImage * temp = Iw2DCreateImage("maso2.png");
-	m_imagenes.insert(std::pair<std::string, CIw2DImage *>("maso", temp));
-	m_pos.insert(std::pair<std::string, CIwFVec2>("maso", CIwFVec2(400, 10)));
+void MesaScene::init(int jugador, int muestra){
+	
+	Carta * cTemp;
 
-	temp = Iw2DCreateImage("reves2.png");
-	float prop = (float)Iw2DGetSurfaceWidth() / temp->GetWidth();
-	float fixpropx = temp->GetWidth()*prop / 12;
-	float fixpropy = temp->GetHeight()*prop / 12;
+	
+	float prop = (float)Iw2DGetSurfaceWidth() / (float) RevesWidth;
+	float fixpropx = (prop / 12)* (float)RevesWidth;
+	float fixpropy = (prop / 12) * (float)RevesHeight;
 	float xmedio = ((float)Iw2DGetSurfaceWidth() - fixpropx - 40) / 2;
 	float xderecha = ((float)Iw2DGetSurfaceWidth() - fixpropy - 10);
 	float ymedio = ((float)Iw2DGetSurfaceHeight() - fixpropx - 40) / 2;
 	float yabajo = ((float)Iw2DGetSurfaceHeight() - fixpropy - 10);
-	m_size.insert(std::pair<std::string, CIwFVec2>("reves", CIwFVec2(fixpropx, fixpropy)));
-	m_size.insert(std::pair<std::string, CIwFVec2>("reves90", CIwFVec2(fixpropy, fixpropx)));
-
-	m_imagenes.insert(std::pair<std::string, CIw2DImage *>("reves1", temp));
-	m_pos.insert(std::pair<std::string, CIwFVec2>("reves1", CIwFVec2(xmedio, 10)));
 
 
-	temp = Iw2DCreateImage("reves2.png");
-	m_imagenes.insert(std::pair<std::string, CIw2DImage *>("reves2", temp));
-	m_pos.insert(std::pair<std::string, CIwFVec2>("reves2", CIwFVec2(xmedio + 20, 10)));
+	cTemp = new Carta(nullptr);
+	cTemp->init(xmedio, yabajo, 0);
+	m_cartas.insert(std::pair<int, Carta *>(1, cTemp));
 
+	cTemp = new Carta(nullptr);
+	cTemp->init(xmedio +20, yabajo, 0);
+	m_cartas.insert(std::pair<int, Carta *>(2, cTemp));
 
-	temp = Iw2DCreateImage("reves2.png");
-	m_imagenes.insert(std::pair<std::string, CIw2DImage *>("reves3", temp));
-	m_pos.insert(std::pair<std::string, CIwFVec2>("reves3", CIwFVec2(xmedio + 40, 10)));
+	cTemp = new Carta(nullptr);
+	cTemp->init(xmedio + 40, yabajo, 0);
+	m_cartas.insert(std::pair<int, Carta *>(3, cTemp));
 
+	cTemp = new Carta(nullptr);
+	cTemp->init(xderecha, ymedio, 0);
+	cTemp->SetTransformation(IW_2D_IMAGE_TRANSFORM_ROT90);
+	m_cartas.insert(std::pair<int, Carta *>(4, cTemp));
 
-	temp = Iw2DCreateImage("reves2.png");
-	m_imagenes.insert(std::pair<std::string, CIw2DImage *>("reves4", temp));
-	m_pos.insert(std::pair<std::string, CIwFVec2>("reves4", CIwFVec2(10, ymedio)));
+	cTemp = new Carta(nullptr);
+	cTemp->init(xderecha, ymedio +20, 0);
+	cTemp->SetTransformation(IW_2D_IMAGE_TRANSFORM_ROT90);
+	m_cartas.insert(std::pair<int, Carta *>(5, cTemp));
 
+	cTemp = new Carta(nullptr);
+	cTemp->init(xderecha, ymedio + 40, 0);
+	cTemp->SetTransformation(IW_2D_IMAGE_TRANSFORM_ROT90);
+	m_cartas.insert(std::pair<int, Carta *>(6, cTemp));
 
-	temp = Iw2DCreateImage("reves2.png");
-	m_imagenes.insert(std::pair<std::string, CIw2DImage *>("reves5", temp));
-	m_pos.insert(std::pair<std::string, CIwFVec2>("reves5", CIwFVec2(10, ymedio + 20)));
+	cTemp = new Carta(nullptr);
+	cTemp->init(xmedio, 10, 0);
+	m_cartas.insert(std::pair<int, Carta *>(7, cTemp));
+	
 
-	temp = Iw2DCreateImage("reves2.png");
-	m_imagenes.insert(std::pair<std::string, CIw2DImage *>("reves6", temp));
-	m_pos.insert(std::pair<std::string, CIwFVec2>("reves6", CIwFVec2(10, ymedio + 40)));
+	cTemp = new Carta(nullptr);
+	cTemp->init(xmedio +20, 10, 0);
+	m_cartas.insert(std::pair<int, Carta *>(8, cTemp));
+	
 
-	temp = Iw2DCreateImage("reves2.png");
-	m_imagenes.insert(std::pair<std::string, CIw2DImage *>("reves7", temp));
-	m_pos.insert(std::pair<std::string, CIwFVec2>("reves7", CIwFVec2(xmedio, yabajo)));
+	cTemp = new Carta(nullptr);
+	cTemp->init(xmedio +40, 10, 0);
+	m_cartas.insert(std::pair<int, Carta *>(9, cTemp));
 
-	temp = Iw2DCreateImage("reves2.png");
-	m_imagenes.insert(std::pair<std::string, CIw2DImage *>("reves8", temp));
-	m_pos.insert(std::pair<std::string, CIwFVec2>("reves8", CIwFVec2(xmedio + 20, yabajo)));
+	
+	cTemp = new Carta(nullptr);
+	cTemp->init(10, ymedio, 0);
+	cTemp->SetTransformation(IW_2D_IMAGE_TRANSFORM_ROT90);
+	m_cartas.insert(std::pair<int, Carta *>(10, cTemp));
 
-	temp = Iw2DCreateImage("reves2.png");
-	m_imagenes.insert(std::pair<std::string, CIw2DImage *>("reves9", temp));
-	m_pos.insert(std::pair<std::string, CIwFVec2>("reves9", CIwFVec2(xmedio + 40, yabajo)));
+	cTemp = new Carta(nullptr);
+	cTemp->init(10, ymedio + 20, 0);
+	cTemp->SetTransformation(IW_2D_IMAGE_TRANSFORM_ROT90);
+	m_cartas.insert(std::pair<int, Carta *>(11, cTemp));
 
-	temp = Iw2DCreateImage("reves2.png");
-	m_imagenes.insert(std::pair<std::string, CIw2DImage *>("reves10", temp));
-	m_pos.insert(std::pair<std::string, CIwFVec2>("reves10", CIwFVec2(xderecha, ymedio)));
-
-	temp = Iw2DCreateImage("reves2.png");
-	m_imagenes.insert(std::pair<std::string, CIw2DImage *>("reves11", temp));
-	m_pos.insert(std::pair<std::string, CIwFVec2>("reves11", CIwFVec2(xderecha, ymedio + 20)));
-
-	temp = Iw2DCreateImage("reves2.png");
-	m_imagenes.insert(std::pair<std::string, CIw2DImage *>("reves12", temp));
-	m_pos.insert(std::pair<std::string, CIwFVec2>("reves12", CIwFVec2(xderecha, ymedio + 40)));
-
+	cTemp = new Carta(nullptr);
+	cTemp->init(10, ymedio + 40, 0);
+	cTemp->SetTransformation(IW_2D_IMAGE_TRANSFORM_ROT90);
+	m_cartas.insert(std::pair<int, Carta *>(12, cTemp));
+	
 }
 
 void MesaScene::CleanUp(){
 	DeleteObj();
 
-	for (std::map<std::string, CIw2DImage *>::iterator it = m_imagenes.begin(); it != m_imagenes.end(); ++it){
+	for (std::map<unsigned int, Carta *>::iterator it = m_cartas.begin(); it != m_cartas.end(); ++it){
+		IwDebugTraceLinePrintf("MUESTRA: %d", it->first);
 		if (it->second != nullptr)
 			delete it->second;
 	}
-	m_imagenes.clear();
+	m_cartas.clear();
 }
+
 void MesaScene::Render(){
 	Iw2DSetImageTransform(IW_2D_IMAGE_TRANSFORM_NONE);
 	getBackGround()->Render();
-	for (std::map<std::string, CIw2DImage *>::iterator it = m_imagenes.begin(); it != m_imagenes.end(); ++it){
+	for (std::map<unsigned int, Carta *>::iterator it = m_cartas.begin(); it != m_cartas.end(); ++it){
 		//IW_2D_IMAGE_TRANSFORM_ROT90 
-
-
-		if (it->first == "maso")
-			Iw2DDrawImage(it->second, m_pos.find(it->first)->second);
-		else{
-			if (it->first == "reves4" || it->first == "reves5" || it->first == "reves6" || it->first == "reves10" || it->first == "reves11" || it->first == "reves12"){
-				Iw2DSetImageTransform(IW_2D_IMAGE_TRANSFORM_ROT90);
-				Iw2DDrawImage(it->second, m_pos.find(it->first)->second, m_size.find("reves90")->second);
-			}
-			else {
-				Iw2DSetImageTransform(IW_2D_IMAGE_TRANSFORM_NONE);
-				Iw2DDrawImage(it->second, m_pos.find(it->first)->second, m_size.find("reves")->second);
-			}
-
-		}
+		it->second->Render();
 	}
 }
 
 bool MesaScene::HitTest(float x, float y){
 
-	float xmin = m_pos.find("reves7")->second.x;
-	float xmax = xmin + 40 + m_size.find("reves")->second.x;
-	float ymin = m_pos.find("reves7")->second.y;
-	float ymax = ymin + m_size.find("reves")->second.y;
+	float prop = (float)Iw2DGetSurfaceWidth() / (float) RevesWidth;
+	float fixpropx = (prop / 12)* (float) RevesWidth;
+	float fixpropy = (prop / 12) * (float) RevesHeight;
+	float xmin = ((float)Iw2DGetSurfaceWidth() - fixpropx - 40) / 2;
+	float ymin = ((float)Iw2DGetSurfaceHeight() - fixpropy - 10);	
+	float xmax = xmin + 40 + CartaWidth;	
+	float ymax = ymin + CartaHeight;
 
 	if (x >= xmin && x <= xmax && y >= ymin && y <= ymax)
 		return true;
@@ -129,14 +124,90 @@ void MesaScene::Update(){
 	TouchInfoDeque::iterator itr;
 	for (itr = proxy->ClickEvents.begin(); itr != proxy->ClickEvents.end(); ++itr)
 	{
-			if (HitTest((float)itr->x,(float) itr->y))
-				SetAction(true);
-			else
-				SetAction(false);
-				
+		if (HitTest((float)itr->x, (float)itr->y))
+			SetAction(true);
+		else
+			SetAction(false);
+
 	}
 	proxy->ClickEvents.clear();
 
-	
+
 	proxy->MoveEvents.clear();
+}
+
+void MesaScene::DoAction(SceneParamBean *scm){
+	float prop = (float)Iw2DGetSurfaceWidth() / (float)RevesWidth;
+	float fixpropx = (prop / 12)* (float)RevesWidth;
+	float fixpropy = (prop / 12) * (float)RevesHeight;
+	
+	float prop2 = (float)Iw2DGetSurfaceWidth() / (float)CartaWidth;
+	float xzise = (prop2 / 10)* (float) CartaWidth;
+	float ysize = (prop2 / 10)* (float) CartaHeight;
+
+	float xderecha = ((float)Iw2DGetSurfaceWidth() - fixpropy - 20 - xzise);
+	float ymedio = ((float)Iw2DGetSurfaceHeight() - fixpropx - 40) / 2;
+	float xmedio = ((float)Iw2DGetSurfaceWidth() - fixpropx - 40) / 2;
+	float yabajo = ((float)Iw2DGetSurfaceHeight() - fixpropy - 20 - ysize) ;
+	
+	Carta * cTemp = new Carta(nullptr);
+	if (scm->GetPlayer() == 1){
+		cTemp->init(xmedio + 20, yabajo, scm->GetCarta());
+		cTemp->SetSize(CIwFVec2(xzise, ysize));
+		std::map<unsigned int, Carta *>::iterator it = m_cartas.find(20);
+		if (it != m_cartas.end()){
+			delete it->second;
+			m_cartas.erase(20);
+		}
+		m_cartas.insert(std::pair<unsigned int, Carta *>(20, cTemp));
+		it = m_cartas.find(3);
+		if (it != m_cartas.end()){
+			delete it->second;
+			m_cartas.erase(3);
+		}
+		else{
+			it = m_cartas.find(2);
+			if (it != m_cartas.end()){
+				delete it->second;
+				m_cartas.erase(2);
+			}
+			else{
+				it = m_cartas.find(1);
+				if (it != m_cartas.end()){
+					delete it->second;
+					m_cartas.erase(1);
+				}
+			}
+		}
+	}
+	else if (scm->GetPlayer() == 2){
+		cTemp->init(xderecha, ymedio, scm->GetCarta());
+		cTemp->SetSize(CIwFVec2(xzise, ysize));
+		std::map<unsigned int, Carta *>::iterator it = m_cartas.find(21);
+		if (it != m_cartas.end()){
+			delete it->second;
+			m_cartas.erase(21);
+		}
+		m_cartas.insert(std::pair<unsigned int, Carta *>(21, cTemp));
+		it = m_cartas.find(6);
+		if (it != m_cartas.end()){
+			delete it->second;
+			m_cartas.erase(6);
+		}
+		else{
+			it = m_cartas.find(5);
+			if (it != m_cartas.end()){
+				delete it->second;
+				m_cartas.erase(5);
+			}
+			else{
+				it = m_cartas.find(4);
+				if (it != m_cartas.end()){
+					delete it->second;
+					m_cartas.erase(4);
+				}
+			}
+		}
+	}
+
 }
