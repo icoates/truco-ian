@@ -9,7 +9,7 @@ class Background
 
 	float width, height;
 	CIw2DImage *bg;
-	
+	bool flag = false;
 
 public:
 	Background();

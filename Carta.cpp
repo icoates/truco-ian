@@ -89,7 +89,7 @@ void Carta::Render(){
 		
 		if (nroRot == 0){
 			Iw2DSetImageTransform(transform);
-			if (this->imag != nullptr){
+			if (this->imag != NULL){
 				Iw2DDrawImageRegion(this->imag, this->pos, this->size, this->offset, this->tamanio);
 			}
 		}
@@ -100,7 +100,7 @@ void Carta::Render(){
 			lMatrix.SetRot(nroRot * PI / 180, CIwFVec2(pos.x+(size.x/2),  pos.y+(size.y/2)));
 			Iw2DSetTransformMatrix(lMatrix);
 			
-			if (this->imag != nullptr){
+			if (this->imag != NULL){
 				Iw2DDrawImageRegion(this->imag, this->pos, CIwFVec2(size.x,size.y), this->offset, this->tamanio);
 			}
 

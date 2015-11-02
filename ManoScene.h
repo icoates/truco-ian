@@ -6,13 +6,14 @@ class ManoScene : public Scene
 {
 	BoxTarget * target;
 	std::map<int, Carta *> imagenes;
+	
 	//std::map<int, DropTargetList*> listaTargets;
 	void CheckCartas();
 	DropTargetList* targetList;
 	
 public:
 	ManoScene();
-	void init();
+	void init(int mano[3], int muestra);
 	void Update();
 	void Render();
 	void CleanUp();

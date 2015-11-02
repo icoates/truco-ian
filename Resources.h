@@ -12,6 +12,7 @@ private:
 	CIw2DImage * reves;
 	CIw2DImage * mesa;
 	CIw2DImage * fieltro;
+//	CIw2DFont * Font;
 	void init();
 public:
 	static Resources* singleton();
@@ -24,7 +25,7 @@ public:
 	CIw2DImage * getReves(){ return reves; }
 	CIw2DImage * getMesa(){ return mesa; }
 	CIw2DImage * getFieltro(){ return fieltro; }
-
+	//CIw2DFont * getFont() { return Font; }
 };
 
 extern Resources* gpResources;

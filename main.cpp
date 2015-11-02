@@ -54,9 +54,9 @@ int main()
 	game->InitMano();
 	while (!s3eDeviceCheckQuitRequest()){ 
 		 
-		//Update the input systems 
+		//Update the input systems  
 		s3eKeyboardUpdate(); 
-		s3ePointerUpdate(); 
+		s3ePointerUpdate();  
 		 		  
 		game->Update(); 
 

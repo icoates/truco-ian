@@ -5,13 +5,13 @@
 GameController::GameController()
 {
 	//Esto en realidad se deberá hacer con las comunicación a efectos de hacer pruebas se pone aquí
-	currentPlayer = new Player("Ian", 4, false);
+	currentPlayer = new Player("Ian", 3, false);
 	jugadores.insert(std::pair<int, Player *>(1, currentPlayer));
-	Player * temp = new Player("Ricca", 3, false);
+	Player * temp = new Player("Ricca", 1, false);
 	jugadores.insert(std::pair<int, Player *>(2, temp));
-	temp = new Player("Peter", 2, false);
+	temp = new Player("Peter", 4, false);
 	jugadores.insert(std::pair<int, Player *>(3, temp));
-	temp = new Player("Taru", 1, true);
+	temp = new Player("Taru", 2, true);
 	jugadores.insert(std::pair<int, Player *>(4, temp));
 }
 
@@ -86,6 +86,8 @@ void GameController::Update(){
 	m_scenes[currentScene]->Update();
 	if (m_scenes[currentScene]->GetAction() && currentScene == "mesa"){
 		m_scenes[currentScene]->ResetAction();
+		//SceneParamBean * scm = new SceneParamBean();
+
 		currentScene = "mano";
 		return;
 	}
@@ -93,14 +95,14 @@ void GameController::Update(){
 		m_scenes["mesa"]->DoAction(m_scenes[currentScene]->GetParamBean());
 		TirarCarta(1,14);
 		TirarCarta(2,13);
-		TirarCarta(3, 15);
+		TirarCarta(4, 15);
 //		TirarCarta(m_scenes[currentScene]->GetParamBean());
 		m_scenes[currentScene]->ResetAction();
 		currentScene = "mesa";
 		return;
 	}
 }
-
+  
 
 void GameController::InitMaso(){
 	std::map<int, int> tempMaso;
@@ -123,7 +125,16 @@ void GameController::InitMaso(){
 			}
 			j++;
 		}		
-	}	
+	}
+	muestra = maso[40 - 13];
+	j = 0;
+	for (int i = 0; i < 12; i++){
+		if ((iTemp + i + 1) % 4 == 1){
+			mano[j] = maso[40 - i - 1];			
+			j++;
+		}
+	}
+	//mano[1] = 14;
 } 
  
 int GameController::nroJugadorReparte(){
@@ -151,19 +162,31 @@ int GameController::nroJugadorReparte(){
 	return 0;
 }
 
+std::string GameController::GetNombreIndex(int nroRel){
+	for (std::map<int, Player *>::iterator it = jugadores.begin(); it != jugadores.end(); it++){
+		if (it->second->GetNroJugador() == nroRel)
+			return (it->second->GetNombre());
+	}
+	return ("");
+}
+
 void GameController::Repartir(){
 	int iTemp= nroJugadorReparte();	
-	((MesaScene *)m_scenes["mesa"])->init(iTemp, maso[40-13]);
-	((ManoScene *)m_scenes["mano"])->init();
-	int j = 1;
-	for (int i = 0; i < 12; i++){
-		if ((iTemp + i + 1) % 4 == 1){
-			
-			((ManoScene *)m_scenes["mano"])->AddCarta(j, maso[40 - i-1]);
-			j++;
-		}
+	std::string nombres[4];
+	nombres[0] = currentPlayer->GetNombre();
+	int jTemp;
+	for (int i = 1; i < 4; i++){
+		jTemp = currentPlayer->GetNroJugador() + i;
+		if (jTemp > 4) jTemp = jTemp % 4;
+		nombres[i] = GetNombreIndex(jTemp);
 	}
+	
+	
+	((MesaScene *)m_scenes["mesa"])->init(iTemp, muestra ,nombres);
+	((ManoScene *)m_scenes["mano"])->init(mano,muestra);
+	
 }
+
 void GameController::InitMano(){
 	if (currentPlayer->GetReparte()){
 		InitMaso();

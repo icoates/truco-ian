@@ -35,7 +35,7 @@ public:
 		float diffx = posi.x - pos.x;
 		float diffy = posi.y - pos.y;
 
-		if (diffx > 0 && diffx < tamanio.x && diffy>0 && diffy < tamanio.y)
+		if (diffx > 0 && diffx < size.x && diffy>0 && diffy < size.y)
 			return true;
 		return false;
 	}

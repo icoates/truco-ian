@@ -4,16 +4,16 @@ ManoScene::ManoScene(){
 	
 };
 
-void ManoScene::init(){
+void ManoScene::init(int mano[3], int muestra){
 	gDragDropManager = new DragDropManager();
 	targetList = new DropTargetList;
-	target = new BoxTarget("abrir.png", CIwFVec2(400, 220));
+	target = new BoxTarget("abrir.png", CIwFVec2((float)Iw2DGetSurfaceWidth()-80, (float) Iw2DGetSurfaceHeight()-80));
 	targetList->Add(target);
-	/*
-	AddCarta(1, cuno);	
-	AddCarta(2, cdos);	
-	AddCarta(3, ctres);
-	*/
+	for (int i = 0; i < 3; i++){
+		AddCarta(i + 1, mano[i]);
+	}
+	AddCarta(4, muestra);
+	
 }
 
 void ManoScene::Update(){
@@ -94,20 +94,30 @@ void ManoScene::AddCarta(int indice, int nroCarta){
 	//permite meter repetidas pero no debería ser problema
 	
 
-
+	float prop2 = (float)Iw2DGetSurfaceWidth() / (float)CartaWidth;
+	float xzise = (prop2 / 5)* (float)CartaWidth;
+	float ysize = (prop2 / 5)* (float)CartaHeight;
 	Carta* oCar = new Carta(targetList);
 	if (indice == 1){
 		oCar->init(20, 20, nroCarta);
 	}
 	else if (indice == 2){
-		oCar->init(20, 34, nroCarta);
+		oCar->init(20, 25, nroCarta);
 	}
-	else {
-		oCar->init(20, 48, nroCarta);
+	else if (indice ==3) {
+		oCar->init(20, 30, nroCarta);
 	}
+	else{
+		oCar->init(50 + xzise, 20, nroCarta);
+		xzise = (prop2 / 10)* (float)CartaWidth;
+		ysize = (prop2 / 10)* (float)CartaHeight;
+		
+	}
+	oCar->SetSize(CIwFVec2(xzise, ysize));
 	imagenes.insert(std::pair<int, Carta *>(indice, oCar));
 	
-	gDragDropManager->Draggables.push_back(imagenes[indice]);
+	if (indice!=4)
+		gDragDropManager->Draggables.push_back(imagenes[indice]);
 	
 
 

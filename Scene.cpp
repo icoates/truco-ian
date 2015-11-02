@@ -4,7 +4,7 @@
 Scene::Scene()
 {
 	m_bg = NULL;
-	param = nullptr;
+	param = NULL;
 }
 
 void Scene::SetBackGround(Background *bg)
@@ -62,6 +62,6 @@ void Scene::SetParamBean(int jugador, int carta){
 
 void Scene::ResetAction(){
 	action = false;
-	if (param!=nullptr)
+	if (param!=NULL)
 		delete param;
 }

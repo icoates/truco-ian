@@ -14,12 +14,16 @@ private:
 	Player * currentPlayer;
 	std::map<int, Player *> jugadores;
 	int maso[40];
+	int muestra;
+	int mano[3];
 
 	void InitMaso();
 	void Repartir();
 	int GetNroJugadorRelativo(int nroJugador);
+	
 	void TirarCarta(int jugador, int carta);
 	int nroJugadorReparte();
+	std::string GetNombreIndex(int nro);
 public:
 	GameController();
 	~GameController();
