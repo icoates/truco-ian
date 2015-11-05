@@ -96,7 +96,7 @@ void ManoScene::CleanUp(){
 
 void ManoScene::AddCarta(int indice, int nroCarta){
 	//permite meter repetidas pero no debería ser problema
-
+	//IwDebugTraceLinePrintf("VA A DAR: %d", nroCarta);
 
 	float prop2 = (float)Iw2DGetSurfaceWidth() / (float)CartaWidth;
 	float xzise = (float)(prop2 / 3.8)* CartaWidth;
@@ -138,6 +138,7 @@ void ManoScene::init(int mano[3], int muestra){
 	targetList->Add(target);
 
 	for (int i = 0; i < 3; i++){
+		
 		AddCarta(i + 1, mano[i]);
 	}
 	AddCarta(4, muestra);

@@ -60,7 +60,10 @@ void Carta::init(float posx, float posy, int nroCt){
 			//this->strPath = "map-bastos2.png";
 		}
 		else if (nroCarta < 21){
-			posCarta = nroCarta % 10 - 1;
+			if (nroCarta == 20)
+				posCarta = 9;
+			else
+				posCarta = nroCarta % 10 - 1;
 			imag = gpResources->getCopas();
 			//this->strPath = "map-copas.png";
 		}
