@@ -1,20 +1,12 @@
 #include "ManoScene.h"
 
 ManoScene::ManoScene(){
-	
+	Background *bg = new Background();
+	bg->Init("mano", (float)Iw2DGetSurfaceWidth(), (float)Iw2DGetSurfaceHeight());
+	SetBackGround(bg);
 };
 
-void ManoScene::init(int mano[3], int muestra){
-	gDragDropManager = new DragDropManager();
-	targetList = new DropTargetList;
-	target = new BoxTarget("abrir.png", CIwFVec2((float)Iw2DGetSurfaceWidth()-80, (float) Iw2DGetSurfaceHeight()-80));
-	targetList->Add(target);
-	for (int i = 0; i < 3; i++){
-		AddCarta(i + 1, mano[i]);
-	}
-	AddCarta(4, muestra);
-	
-}
+
 
 void ManoScene::Update(){
 	PointerProxy *proxy = PointerProxy::singleton();
@@ -73,19 +65,28 @@ void ManoScene::CheckCartas(){
 	}
 } 
 
-void ManoScene::CleanUp(){
-	DeleteObj();
+void ManoScene::LimpiarMano(){
 	for (std::map<int, Carta *>::iterator it = imagenes.begin(); it != imagenes.end(); ++it)
 	{
 
 		delete it->second;
 	}
 
-	delete target;
-	delete targetList;
 	
+		if (target)
+			delete target;
 	
+		if (targetList)
+			delete targetList;
+
+	
+
 	imagenes.clear();
+}
+
+void ManoScene::CleanUp(){
+	DeleteObj();
+	LimpiarMano();
 }
 
 
@@ -95,8 +96,8 @@ void ManoScene::AddCarta(int indice, int nroCarta){
 	
 
 	float prop2 = (float)Iw2DGetSurfaceWidth() / (float)CartaWidth;
-	float xzise = (prop2 / 5)* (float)CartaWidth;
-	float ysize = (prop2 / 5)* (float)CartaHeight;
+	float xzise = (float)(prop2 / 3.8)* CartaWidth;
+	float ysize = (float)(prop2 / 3.8)* CartaHeight;
 	Carta* oCar = new Carta(targetList);
 	if (indice == 1){
 		oCar->init(20, 20, nroCarta);
@@ -120,5 +121,22 @@ void ManoScene::AddCarta(int indice, int nroCarta){
 		gDragDropManager->Draggables.push_back(imagenes[indice]);
 	
 
+
+}
+
+void ManoScene::init(int mano[3], int muestra){
+	
+	targetList = new DropTargetList;
+	float propPozo = (float)Iw2DGetSurfaceWidth() / PozoWidth;
+	float xpozosize = (propPozo / 6) * PozoWidth;
+
+	target = new BoxTarget("Pozo", CIwFVec2((float)Iw2DGetSurfaceWidth() - xpozosize - 10, (float)Iw2DGetSurfaceHeight() - xpozosize - 10));
+	target->SetSize(CIwFVec2(xpozosize, xpozosize));
+	targetList->Add(target);
+
+	for (int i = 0; i < 3; i++){
+		AddCarta(i + 1, mano[i]);
+	}
+	AddCarta(4, muestra);
 
 }

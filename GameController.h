@@ -13,15 +13,18 @@ private:
 	std::string currentScene;
 	Player * currentPlayer;
 	std::map<int, Player *> jugadores;
+
+
+
 	int maso[40];
 	int muestra;
 	int mano[3];
-
+	int tirada = 0;
 	void InitMaso();
-	void Repartir();
-	int GetNroJugadorRelativo(int nroJugador);
-	
+	void Repartir();	
+	int GetNroJugadorRelativo(int nroJugador);	
 	void TirarCarta(int jugador, int carta);
+	void SetReparteSiguiente();
 	int nroJugadorReparte();
 	std::string GetNombreIndex(int nro);
 public:
@@ -35,6 +38,7 @@ public:
 	void Update();
 	Scene* GetScene(std::string);
 	void InitMano();
+	void Init();
 	
 };
 
