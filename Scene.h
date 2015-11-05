@@ -6,7 +6,6 @@
 #include <map>	//ojo que esto estaba en player
 #include "PointerProxy.h"
 #include "SceneParamBean.h"
-#include "GameState.h"
 
 class Scene
 {

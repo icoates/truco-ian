@@ -3,28 +3,35 @@
 
 
 MesaScene::MesaScene(){
-	Background* bg2 = new Background();
-	bg2->Init("mesa", (float)Iw2DGetSurfaceWidth(), (float)Iw2DGetSurfaceHeight());
-	SetBackGround(bg2);
+
 }
 
 MesaScene::~MesaScene(){
 
 }
 
-void MesaScene::initMesa(int jugador, int muestra, std::string pNom[4]){
+void MesaScene::init(int jugador, int muestra, std::string pNom[4]){
 	
 	for (int i = 0; i < 4; i++){
 		nombres[i] = pNom[i];
 	}
-	
+	if (gpResources == 0)
+		gpResources = Resources::singleton();
 //	Iw2DSetFont(gpResources->getFont());
 	
-	
+	Carta * cTemp;
+	float prop2 = (float)Iw2DGetSurfaceWidth() / (float)CartaWidth;
+	float xzise = (prop2 / 10)* (float)CartaWidth;
+	float ysize = (prop2 / 10)* (float)CartaHeight;
 	float xmaso;
-	float ymaso;	
+	float ymaso;
+	float yBajo = (float)Iw2DGetSurfaceHeight() - 10 - (float) sqrt((xzise*xzise) + (ysize*ysize));
+	float xmasoDer = (float)Iw2DGetSurfaceWidth() - 10 - (float) sqrt((xzise*xzise) + (ysize*ysize));
+	float propmaso = (float)Iw2DGetSurfaceWidth() / MasoWidth;
+	float xsizeMaso = (propmaso / 6) * MasoWidth;
+	float ysizeMaso = (propmaso / 6) * MasoHeight;
 
-	Carta * cTemp = new Carta(NULL);
+	cTemp = new Carta(NULL);
 
 	if (jugador == 3){
 		
@@ -35,13 +42,13 @@ void MesaScene::initMesa(int jugador, int muestra, std::string pNom[4]){
 	}
 	else if (jugador == 4) {
 		
-		cTemp->init(50, yMasoBajo , muestra);
+		cTemp->init(50, yBajo , muestra);
 		cTemp->SetRot(45);
 		cTemp->SetSize(CIwFVec2(xzise, ysize));
 		m_cartas.insert(std::pair<unsigned int, Carta*>(0, cTemp));
 	}
 	else if (jugador == 1){
-		cTemp->init(xmasoDer, yMasoBajo, muestra);
+		cTemp->init(xmasoDer, yBajo, muestra);
 		cTemp->SetRot(315);
 		cTemp->SetSize(CIwFVec2(xzise, ysize));
 		m_cartas.insert(std::pair<unsigned int, Carta*>(0, cTemp));
@@ -73,7 +80,7 @@ void MesaScene::initMesa(int jugador, int muestra, std::string pNom[4]){
 	
 
 	cTemp = new Carta(NULL);
-	cTemp->init(xmaso, ymaso, CodMazo);
+	cTemp->init(xmaso, ymaso, 41);
 	
 	cTemp->SetSize(CIwFVec2(xsizeMaso,ysizeMaso));
 
@@ -82,65 +89,74 @@ void MesaScene::initMesa(int jugador, int muestra, std::string pNom[4]){
 	
 
 	cTemp = new Carta(NULL);
-	cTemp->init(xmedio, yabajo, CodReves);
+	cTemp->init(xmedio, yabajo, 0);
 	m_cartas.insert(std::pair<int, Carta *>(1, cTemp));
 
 	cTemp = new Carta(NULL);
-	cTemp->init(xmedio + 20, yabajo, CodReves);
+	cTemp->init(xmedio +20, yabajo, 0);
 	m_cartas.insert(std::pair<int, Carta *>(2, cTemp));
 
 	cTemp = new Carta(NULL);
-	cTemp->init(xmedio + 40, yabajo, CodReves);
+	cTemp->init(xmedio + 40, yabajo, 0);
 	m_cartas.insert(std::pair<int, Carta *>(3, cTemp));
 
 	cTemp = new Carta(NULL);
-	cTemp->init(xderecha, ymedio, CodReves);
+	cTemp->init(xderecha, ymedio, 0);
 	cTemp->SetTransformation(IW_2D_IMAGE_TRANSFORM_ROT90);
 	m_cartas.insert(std::pair<int, Carta *>(4, cTemp));
 
 	cTemp = new Carta(NULL);
-	cTemp->init(xderecha, ymedio + 20, CodReves);
+	cTemp->init(xderecha, ymedio +20, 0);
 	cTemp->SetTransformation(IW_2D_IMAGE_TRANSFORM_ROT90);
 	m_cartas.insert(std::pair<int, Carta *>(5, cTemp));
 
 	cTemp = new Carta(NULL);
-	cTemp->init(xderecha, ymedio + 40, CodReves);
+	cTemp->init(xderecha, ymedio + 40, 0);
 	cTemp->SetTransformation(IW_2D_IMAGE_TRANSFORM_ROT90);
 	m_cartas.insert(std::pair<int, Carta *>(6, cTemp));
 
 	cTemp = new Carta(NULL);
-	cTemp->init(xmedio, 10, CodReves);
+	cTemp->init(xmedio, 10, 0);
 	m_cartas.insert(std::pair<int, Carta *>(7, cTemp));
 	
 
 	cTemp = new Carta(NULL);
-	cTemp->init(xmedio + 20, 10, CodReves);
+	cTemp->init(xmedio +20, 10, 0);
 	m_cartas.insert(std::pair<int, Carta *>(8, cTemp));
 	
 
 	cTemp = new Carta(NULL);
-	cTemp->init(xmedio + 40, 10, CodReves);
+	cTemp->init(xmedio +40, 10, 0);
 	m_cartas.insert(std::pair<int, Carta *>(9, cTemp));
 
 	
 	cTemp = new Carta(NULL);
-	cTemp->init(10, ymedio, CodReves);
+	cTemp->init(10, ymedio, 0);
 	cTemp->SetTransformation(IW_2D_IMAGE_TRANSFORM_ROT90);
 	m_cartas.insert(std::pair<int, Carta *>(10, cTemp));
 
 	cTemp = new Carta(NULL);
-	cTemp->init(10, ymedio + 20, CodReves);
+	cTemp->init(10, ymedio + 20, 0);
 	cTemp->SetTransformation(IW_2D_IMAGE_TRANSFORM_ROT90);
 	m_cartas.insert(std::pair<int, Carta *>(11, cTemp));
 
 	cTemp = new Carta(NULL);
-	cTemp->init(10, ymedio + 40, CodReves);
+	cTemp->init(10, ymedio + 40, 0);
 	cTemp->SetTransformation(IW_2D_IMAGE_TRANSFORM_ROT90);
 	m_cartas.insert(std::pair<int, Carta *>(12, cTemp));
 	
 }
 
+void MesaScene::CleanUp(){
+	DeleteObj();
 
+	for (std::map<unsigned int, Carta *>::iterator it = m_cartas.begin(); it != m_cartas.end(); ++it){
+//		IwDebugTraceLinePrintf("MUESTRA: %d", it->first);
+		if (it->second != NULL)
+			delete it->second;
+	}
+	m_cartas.clear();
+}
 
 void MesaScene::Render(){
 	Iw2DSetImageTransform(IW_2D_IMAGE_TRANSFORM_NONE);
@@ -171,37 +187,15 @@ void MesaScene::Update(){
 	PointerProxy *proxy = PointerProxy::singleton();
 	// consume up/down events
 	TouchInfoDeque::iterator itr;
-	if (gpGameState->GetEstado() == ManoJugando){
+	for (itr = proxy->ClickEvents.begin(); itr != proxy->ClickEvents.end(); ++itr)
+	{
+		if (HitTest((float)itr->x, (float)itr->y)){
+		SetAction(true);
 		
-		for (itr = proxy->ClickEvents.begin(); itr != proxy->ClickEvents.end(); ++itr)
-		{
-			if (HitTest((float)itr->x, (float)itr->y)){
-				SetAction(true);
-			}
-			else
-				SetAction(false);
+		}
+		else
+			SetAction(false);
 
-		}
-		
-	}
-	else if (gpGameState->GetEstado()== TerminoMano){
-		std::map<unsigned int, Carta *>::iterator it = m_cartas.find(55);
-		if (it != m_cartas.end()){
-			//la cagamooooo
-		}
-		for (itr = proxy->ClickEvents.begin(); itr != proxy->ClickEvents.end(); ++itr)
-		{
-			if (  it->second->IsInside(CIwFVec2((float)itr->x, (float)itr->y))){
-				SetAction(true);
-				delete it->second;
-				m_cartas.erase(55);
-				LimpiarMesa();
-				
-			}
-			else
-				SetAction(false);
-
-		}
 	}
 	proxy->ClickEvents.clear();
 
@@ -209,21 +203,10 @@ void MesaScene::Update(){
 	proxy->MoveEvents.clear();
 }
 
-void MesaScene::LimpiarMesa(){
-	for (std::map<unsigned int, Carta *>::iterator it = m_cartas.begin(); it != m_cartas.end(); ++it){
-		IwDebugTraceLinePrintf("MUESTRA: %d", it->first);
-		if (it->second != NULL)
-			delete it->second;
-	}
-	m_cartas.clear();
-}
-
-void MesaScene::CleanUp(){
-	DeleteObj();
-	LimpiarMesa();
-}
 void MesaScene::DoAction(SceneParamBean *scm){
 	
+	
+
 	
 	Carta * cTemp = new Carta(NULL);
 
@@ -347,26 +330,4 @@ void MesaScene::DoAction(SceneParamBean *scm){
 		}
 	}
 
-	if (scm->GetRefresh() > 0){
-		//IwDebugTraceLinePrintf("VA A DAR: %d", scm->GetRefresh());
-		float xr = 0;
-		float yr = 0;
-		Carta * cTemp2 ;
-		cTemp2 = new Carta(NULL);
-		cTemp2->init(10, 10, Codrefresh);
-
-		//no pregunto por el 3 porque ahi seria 10 10 q es con lo que inicializa arriba
-		if (scm->GetRefresh() == 1){
-			cTemp2->SetPos(CIwFVec2((float)Iw2DGetSurfaceWidth() - cTemp2->GetSize().x - 10, (float)Iw2DGetSurfaceHeight() - cTemp2->GetSize().y - 10));
-		}
-		else if (scm->GetRefresh() == 2){
-			cTemp2->SetPos(CIwFVec2((float)Iw2DGetSurfaceWidth() - cTemp2->GetSize().x - 10,  10));
-		}
-		else if (scm->GetRefresh() == 4){
-			cTemp2->SetPos(CIwFVec2(10, (float)Iw2DGetSurfaceHeight() - cTemp2->GetSize().y - 10));
-		}
-		m_cartas.insert(std::pair<int, Carta*>(55, cTemp2));
-		
-		gpGameState->SetEstado(TerminoMano);
-	}
 }

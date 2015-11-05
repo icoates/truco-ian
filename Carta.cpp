@@ -22,7 +22,7 @@ void Carta::init(float posx, float posy, int nroCt){
 
 	this->pos =  CIwFVec2(posx, posy);
 	this->nroCarta = nroCt;
-	if (CodReves == nroCarta){
+	if (nroCarta == 0){
 		imag = gpResources->getReves();
 		//strPath = "reves2.png";
 		offset = CIwFVec2(0, 0);
@@ -34,7 +34,7 @@ void Carta::init(float posx, float posy, int nroCt){
 		tamanio = CIwFVec2(rwidth, rHeight);
 		size = CIwFVec2(fixpropx,fixpropy);
 	}
-	else if (nroCarta == CodMazo){
+	else if (nroCarta == 41){
 		imag = gpResources->getMaso();
 		//strPath = "maso2.png";  
 		offset = CIwFVec2(0, 0); 
@@ -45,14 +45,6 @@ void Carta::init(float posx, float posy, int nroCt){
 		float fixpropy = mHeight*prop / prop;
 		tamanio = CIwFVec2(mwidth, mHeight);
 		size = CIwFVec2(fixpropx, fixpropy);
-	}
-	else if (nroCarta == Codrefresh){
-		imag = gpResources->getRefresh();
-		offset = CIwFVec2(0, 0);
-		float prop = (float)Iw2DGetSurfaceWidth() / RefreshWidth;
-		float fixpropx = (prop / 12) * RefreshWidth;
-		tamanio = CIwFVec2(RefreshWidth, RefreshWidth);
-		size = CIwFVec2(fixpropx, fixpropx);
 	}
 	else{ 
 		int posCarta = 0;

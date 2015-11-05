@@ -17,7 +17,6 @@ public:
 	void Update();
 	void Render();
 	void CleanUp();
-	void LimpiarMano();
 	void AddTarget(BoxTarget *);
 	void AddCarta(int indice, int nroCarta);
 	

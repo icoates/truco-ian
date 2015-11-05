@@ -1,7 +1,6 @@
 #pragma once
 #include <list>
 #include "IwGx.h"
-#include "Resources.h"
 
 class Draggable;
 

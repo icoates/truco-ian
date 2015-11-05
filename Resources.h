@@ -12,8 +12,6 @@ private:
 	CIw2DImage * reves;
 	CIw2DImage * mesa;
 	CIw2DImage * fieltro;
-	CIw2DImage * refresh;
-	CIw2DImage * Pozo;
 //	CIw2DFont * Font;
 	void init();
 public:
@@ -27,8 +25,6 @@ public:
 	CIw2DImage * getReves(){ return reves; }
 	CIw2DImage * getMesa(){ return mesa; }
 	CIw2DImage * getFieltro(){ return fieltro; }
-	CIw2DImage * getRefresh() { return refresh; }
-	CIw2DImage * getPozo() { return Pozo; }
 	//CIw2DFont * getFont() { return Font; }
 };
 

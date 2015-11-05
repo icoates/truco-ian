@@ -24,19 +24,13 @@ private:
 	float ysize = (prop2 / 10)* (float)CartaHeight;
 	float xCartaDerecha = ((float)Iw2DGetSurfaceWidth() - fixpropy - 20 - xzise);
 	float yCartaAbajo = ((float)Iw2DGetSurfaceHeight() - fixpropy - 20 - ysize);
-	float yMasoBajo = (float)Iw2DGetSurfaceHeight() - 10 - (float)sqrt((xzise*xzise) + (ysize*ysize));
-	float xmasoDer = (float)Iw2DGetSurfaceWidth() - 10 - (float)sqrt((xzise*xzise) + (ysize*ysize));
-	float propmaso = (float)Iw2DGetSurfaceWidth() / MasoWidth;
-	float xsizeMaso = (propmaso / 6) * MasoWidth;
-	float ysizeMaso = (propmaso / 6) * MasoHeight;
-	
+
 public:
 	MesaScene();
 	~MesaScene();
-	void initMesa(int jugador, int muestra, std::string pnom[4]);
+	void init(int jugador, int muestra, std::string pnom[4]);
 	void Render();
 	void CleanUp();
-	void LimpiarMesa();
 	bool HitTest(float, float);
 	void DoAction(SceneParamBean * spm);
 	void Update();

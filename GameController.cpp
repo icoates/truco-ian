@@ -13,11 +13,7 @@ GameController::GameController()
 	jugadores.insert(std::pair<int, Player *>(3, temp));
 	temp = new Player("Taru", 2, true);
 	jugadores.insert(std::pair<int, Player *>(4, temp));
-
-	if (!gpGameState)
-		gpGameState = GameState::Singleton();
 }
-
 
 
 GameController::~GameController()
@@ -55,7 +51,6 @@ void GameController::CleanUp()
 	for (std::map<std::string, Scene*>::iterator it = m_scenes.begin(); it != m_scenes.end(); ++it)
 	{
 		it->second->CleanUp();
-		delete it->second;
 	}
 
 	m_scenes.clear();
@@ -84,58 +79,27 @@ void GameController::TirarCarta(int jugador, int carta){
 	SceneParamBean * scm = new SceneParamBean();
 	scm->SetPlayer(GetNroJugadorRelativo(jugador));
 	scm->SetCarta(carta);
-	if (jugador == 4 && tirada == 3){
-		
-			scm->SetRefresh(nroJugadorReparte());
-	}
 	m_scenes["mesa"]->DoAction(scm);
 	delete scm;
 }
 void GameController::Update(){
 	m_scenes[currentScene]->Update();
+	if (m_scenes[currentScene]->GetAction() && currentScene == "mesa"){
+		m_scenes[currentScene]->ResetAction();
+		//SceneParamBean * scm = new SceneParamBean();
 
-	if (gpGameState->GetEstado() == ManoJugando){
-
-		if (m_scenes[currentScene]->GetAction() && currentScene == "mesa"){
-			m_scenes[currentScene]->ResetAction();
-			//SceneParamBean * scm = new SceneParamBean();
-
-			currentScene = "mano";
-			return;
-		}
-		else if (m_scenes[currentScene]->GetAction() && currentScene == "mano"){
-			m_scenes["mesa"]->DoAction(m_scenes[currentScene]->GetParamBean());
-			tirada++;
-			if (tirada == 1){
-				TirarCarta(1, maso[38]);
-				TirarCarta(2, maso[37]);
-				TirarCarta(4, maso[36]);
-			}
-			else if (tirada == 2){
-				TirarCarta(1, maso[34]);
-				TirarCarta(2, maso[33]);
-				TirarCarta(4, maso[32]);
-			}
-			else{
-				TirarCarta(1, maso[30]);
-				TirarCarta(2, maso[29]);
-				TirarCarta(4, maso[28]);
-			}
-			//		TirarCarta(m_scenes[currentScene]->GetParamBean());
-			m_scenes[currentScene]->ResetAction();
-			currentScene = "mesa";
-			return;
-		}
+		currentScene = "mano";
+		return;
 	}
-	else if (gpGameState->GetEstado()==TerminoMano){
-		//aca habría que ver quien da si es el current o si hay que esperar a que llegue el mensaje del que da
-		if (m_scenes[currentScene]->GetAction() && currentScene == "mesa"){
-			m_scenes[currentScene]->ResetAction();
-			((ManoScene *) m_scenes["mano"])->LimpiarMano();
-			((MesaScene *)m_scenes["mesa"])->LimpiarMesa();
-			InitMano();
-			gpGameState->SetEstado(ManoJugando);
-		}
+	else if (m_scenes[currentScene]->GetAction() && currentScene == "mano"){
+		m_scenes["mesa"]->DoAction(m_scenes[currentScene]->GetParamBean());
+		TirarCarta(1,14);
+		TirarCarta(2,13);
+		TirarCarta(4, 15);
+//		TirarCarta(m_scenes[currentScene]->GetParamBean());
+		m_scenes[currentScene]->ResetAction();
+		currentScene = "mesa";
+		return;
 	}
 }
   
@@ -165,7 +129,7 @@ void GameController::InitMaso(){
 	muestra = maso[40 - 13];
 	j = 0;
 	for (int i = 0; i < 12; i++){
-		if (( i + 1) % 4 == 1){
+		if ((iTemp + i + 1) % 4 == 1){
 			mano[j] = maso[40 - i - 1];			
 			j++;
 		}
@@ -218,41 +182,16 @@ void GameController::Repartir(){
 	}
 	
 	
-	((MesaScene *)m_scenes["mesa"])->initMesa(iTemp, muestra ,nombres);
-
+	((MesaScene *)m_scenes["mesa"])->init(iTemp, muestra ,nombres);
 	((ManoScene *)m_scenes["mano"])->init(mano,muestra);
 	
 }
 
-
-
-
-void GameController::SetReparteSiguiente(){
-	int reparte = 0;
-	for (std::map<int, Player *>::iterator it = jugadores.begin(); it != jugadores.end(); it++){
-		if (it->second->GetReparte()){
-			reparte = it->second->GetNroJugador();
-			it->second->SetReparte(false);
-		}
-	}
-	reparte++;
-	if (reparte == 5) reparte = 1;
-	for (std::map<int, Player *>::iterator it = jugadores.begin(); it != jugadores.end(); it++){
-		if (it->second->GetNroJugador() == reparte)
-			it->second->SetReparte(true);
-	}
-}
 void GameController::InitMano(){
-	if (!gpGameState)
-		gpGameState = GameState::Singleton();
-
-	tirada = 0;
-	gpGameState->SetEstado(ManoJugando);
-
 	if (currentPlayer->GetReparte()){
 		InitMaso();
 		Repartir();
-		
+		currentPlayer->SetReparte(false);
 		//Reparte el siguiente hay que actualizar el estado
 		
 	}
@@ -261,15 +200,4 @@ void GameController::InitMano(){
 		InitMaso();
 		Repartir();
 	}
-	SetReparteSiguiente();
-
-}
-
-void GameController::Init(){
-	ManoScene *ms = new ManoScene();
-	MesaScene *mesa = new MesaScene();
-	AddScene("mano", ms);
-	AddScene("mesa", mesa);
-	SetScene("mesa");
-	InitMano();
 }
