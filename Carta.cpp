@@ -17,12 +17,10 @@ Carta::~Carta()
 
 
 void Carta::init(float posx, float posy, int nroCt){ 
-	if (!gpResources)
-		gpResources = Resources::singleton();
-
-	this->pos =  CIwFVec2(posx, posy);
+	
+	this->pos = CIwFVec2(posx, posy);
 	this->nroCarta = nroCt;
-	if (nroCarta == 0){
+	if (CodReves == nroCarta){
 		imag = gpResources->getReves();
 		//strPath = "reves2.png";
 		offset = CIwFVec2(0, 0);
@@ -32,13 +30,13 @@ void Carta::init(float posx, float posy, int nroCt){
 		float fixpropx = prop*rwidth / 12;
 		float fixpropy = rHeight*prop / 12;
 		tamanio = CIwFVec2(rwidth, rHeight);
-		size = CIwFVec2(fixpropx,fixpropy);
+		size = CIwFVec2(fixpropx, fixpropy);
 	}
-	else if (nroCarta == 41){
+	else if (nroCarta == CodMazo){
 		imag = gpResources->getMaso();
 		//strPath = "maso2.png";  
-		offset = CIwFVec2(0, 0); 
-		float mwidth = MasoWidth; 
+		offset = CIwFVec2(0, 0);
+		float mwidth = MasoWidth;
 		float mHeight = MasoHeight;
 		float prop = (float)Iw2DGetSurfaceWidth() / mwidth;
 		float fixpropx = prop*mwidth / prop;
@@ -46,25 +44,33 @@ void Carta::init(float posx, float posy, int nroCt){
 		tamanio = CIwFVec2(mwidth, mHeight);
 		size = CIwFVec2(fixpropx, fixpropy);
 	}
-	else{ 
+	else if (nroCarta == CodRefresh){
+		imag = gpResources->getRefresh();
+		offset = CIwFVec2(0, 0);
+		float prop = (float)Iw2DGetSurfaceWidth() / RefreshWidth;
+		float fixpropx = (prop / 12) * RefreshWidth;
+		tamanio = CIwFVec2(RefreshWidth, RefreshWidth);
+		size = CIwFVec2(fixpropx, fixpropx);
+	}
+	else{
 		int posCarta = 0;
 		if (nroCarta < 11){
-			posCarta = nroCarta-1;
+			posCarta = nroCarta - 1;
 			imag = gpResources->getBastos();
 			//this->strPath = "map-bastos2.png";
 		}
 		else if (nroCarta < 21){
-			posCarta = nroCarta % 10-1;
+			posCarta = nroCarta % 10 - 1;
 			imag = gpResources->getCopas();
 			//this->strPath = "map-copas.png";
 		}
 		else if (nroCarta < 31){
-			posCarta = nroCarta % 20-1;
+			posCarta = nroCarta % 20 - 1;
 			imag = gpResources->getEspadas();
 			//this->strPath = "map-espadas.png";
 		}
 		else {
-			posCarta = nroCarta % 30-1;
+			posCarta = nroCarta % 30 - 1;
 			imag = gpResources->getOros();
 			//this->strPath = "map-oros.png";
 		}

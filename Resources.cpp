@@ -1,5 +1,5 @@
 #include "Resources.h"
-#include "Resources.h"
+
 
 Resources* gpResources = 0;
 
@@ -8,10 +8,12 @@ void Resources::init(){
 	copas = Iw2DCreateImage("map-copas2.png");
 	oros = Iw2DCreateImage("map-oros2.png");
 	espadas = Iw2DCreateImage("map-espadas2.png");
-	maso =  Iw2DCreateImage("maso3.png");
+	maso = Iw2DCreateImage("maso3.png");
 	reves = Iw2DCreateImage("reves2.png");
 	mesa = Iw2DCreateImage("mesa.png");
 	fieltro = Iw2DCreateImage("fieltro2.jpg");
+	refresh = Iw2DCreateImage("refresh.png");
+	Pozo = Iw2DCreateImage("abrir.png");
 	//Font = Iw2DCreateFont("fonts/font.gxfont");
 }
 
@@ -32,7 +34,9 @@ void Resources::DestroySingleton(){
 	delete mesa;
 	delete fieltro;
 	delete reves;
-//	delete Font;
+	delete refresh;
+	delete Pozo;
+	//	delete Font;
 	delete gpResources;
 	gpResources = 0;
 }

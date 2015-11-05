@@ -13,13 +13,15 @@ void Initialize()
 	Iw2DInit(); 
 	// register for touch callbacks with marmalade system
 	PointerProxy::singleton()->RegisterCallbacks();
+	gDragDropManager = new DragDropManager();
 }  
  
 void Terminate()  
 {
 	delete gDragDropManager;
 	  
-	 
+	gDragDropManager = 0;
+	GameState::Singleton()->DeleteSingleton();
 	Resources::singleton()->DestroySingleton(); 
 
 	PointerProxy::singleton()->Unregister();
@@ -35,17 +37,15 @@ int main()
 	IwGxSetColClear(0x2f, 0x3f, 0x3f, 0xff);
 
 
-	Background *bg = new Background();
-	bg->Init("mano", (float)Iw2DGetSurfaceWidth(), (float)Iw2DGetSurfaceHeight());
+	
 	ManoScene *ms = new ManoScene();
 	
-	ms->SetBackGround(bg);
+	
 	//ms->init(2, 4, 5);
 	
-	Background *bg2 = new Background();
-	bg2->Init("mesa", (float)Iw2DGetSurfaceWidth(), (float)Iw2DGetSurfaceHeight());
+	
 	MesaScene *mesa = new MesaScene();
-	mesa->SetBackGround(bg2);
+	
 	//mesa->init();
 	GameController *game = new GameController();
 	game->AddScene("mano",ms);
@@ -77,4 +77,4 @@ int main()
 	Terminate();
 
 	return 0;
-}
+} 

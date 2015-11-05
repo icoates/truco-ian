@@ -16,17 +16,17 @@ private:
 	int maso[40];
 	int muestra;
 	int mano[3];
-
+	int tirada = 0;
 	void InitMaso();
 	void Repartir();
-	int GetNroJugadorRelativo(int nroJugador);
-	
+	int GetNroJugadorRelativo(int nroJugador);	
 	void TirarCarta(int jugador, int carta);
+	void SetReparteSiguiente();
 	int nroJugadorReparte();
 	std::string GetNombreIndex(int nro);
 public:
 	GameController();
-	~GameController();
+	~GameController(); 
 	void AddScene(std::string, Scene *);
 	void SetScene(std::string);
 	std::string GetCurrentScene();
@@ -35,6 +35,6 @@ public:
 	void Update();
 	Scene* GetScene(std::string);
 	void InitMano();
-	
+	void Init();
 };
 

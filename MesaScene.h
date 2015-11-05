@@ -4,11 +4,11 @@
 
 class MesaScene : public Scene
 {
-private:	
+private:
 	std::map<unsigned int, Carta *> m_cartas;
 	std::string nombres[4];
 
-	float prop = (float)Iw2DGetSurfaceWidth() / (float) RevesWidth;
+	float prop = (float)Iw2DGetSurfaceWidth() / (float)RevesWidth;
 	float fixpropx = (prop / 12)* (float)RevesWidth;
 	float fixpropy = (prop / 12) * (float)RevesHeight;
 	float xmedio = ((float)Iw2DGetSurfaceWidth() - fixpropx - 40) / 2;
@@ -24,6 +24,11 @@ private:
 	float ysize = (prop2 / 10)* (float)CartaHeight;
 	float xCartaDerecha = ((float)Iw2DGetSurfaceWidth() - fixpropy - 20 - xzise);
 	float yCartaAbajo = ((float)Iw2DGetSurfaceHeight() - fixpropy - 20 - ysize);
+	float yMasoBajo = (float)Iw2DGetSurfaceHeight() - 10 - (float)sqrt((xzise*xzise) + (ysize*ysize));
+	float xmasoDer = (float)Iw2DGetSurfaceWidth() - 10 - (float)sqrt((xzise*xzise) + (ysize*ysize));
+	float propmaso = (float)Iw2DGetSurfaceWidth() / MasoWidth;
+	float xsizeMaso = (propmaso / 6) * MasoWidth;
+	float ysizeMaso = (propmaso / 6) * MasoHeight;
 
 public:
 	MesaScene();
@@ -31,7 +36,8 @@ public:
 	void init(int jugador, int muestra, std::string pnom[4]);
 	void Render();
 	void CleanUp();
-	bool HitTest(float, float);
+	void LimpiarMesa();
+	bool HitTest(float, float); 
 	void DoAction(SceneParamBean * spm);
 	void Update();
 };

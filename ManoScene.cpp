@@ -1,20 +1,12 @@
 #include "ManoScene.h"
 
 ManoScene::ManoScene(){
-	
+	Background *bg = new Background();
+	bg->Init("mano", (float)Iw2DGetSurfaceWidth(), (float)Iw2DGetSurfaceHeight());
+	SetBackGround(bg);
 };
 
-void ManoScene::init(int mano[3], int muestra){
-	gDragDropManager = new DragDropManager();
-	targetList = new DropTargetList;
-	target = new BoxTarget("abrir.png", CIwFVec2((float)Iw2DGetSurfaceWidth()-80, (float) Iw2DGetSurfaceHeight()-80));
-	targetList->Add(target);
-	for (int i = 0; i < 3; i++){
-		AddCarta(i + 1, mano[i]);
-	}
-	AddCarta(4, muestra);
-	
-}
+
 
 void ManoScene::Update(){
 	PointerProxy *proxy = PointerProxy::singleton();
@@ -52,7 +44,7 @@ void ManoScene::Render(){
 }
 void ManoScene::CheckCartas(){
 	for (std::map<int, Carta *>::iterator it = imagenes.begin(); it != imagenes.end(); ++it){
-		if (it->second->GetShow()==false){
+		if (it->second->GetShow() == false){
 			SetAction(true);
 			//Aca se deberia pasar el jugador por ahora para pruebas siempre es el 1
 			SetParamBean(1, it->second->GetNroCarta());
@@ -63,40 +55,52 @@ void ManoScene::CheckCartas(){
 					gDragDropManager->Draggables.erase(itr);
 					break;
 				}
-			} 
+			}
 			delete it->second;
 			imagenes.erase(it->first);
-			   
+
 			//solo se juega de a una
 			break;
 		}
 	}
-} 
+}
 
-void ManoScene::CleanUp(){
-	DeleteObj();
+void ManoScene::LimpiarMano(){
 	for (std::map<int, Carta *>::iterator it = imagenes.begin(); it != imagenes.end(); ++it)
 	{
 
 		delete it->second;
 	}
 
-	delete target;
-	delete targetList;
-	
-	
+
+	if (target){
+		delete target;
+		target = 0;
+	}
+
+	if (targetList){
+		delete targetList;
+		targetList = 0;
+	}
+
+
 	imagenes.clear();
+}
+
+void ManoScene::CleanUp(){
+	DeleteObj();
+	LimpiarMano();
 }
 
 
 
 void ManoScene::AddCarta(int indice, int nroCarta){
 	//permite meter repetidas pero no debería ser problema
-	
+
 
 	float prop2 = (float)Iw2DGetSurfaceWidth() / (float)CartaWidth;
-	float xzise = (prop2 / 5)* (float)CartaWidth;
-	float ysize = (prop2 / 5)* (float)CartaHeight;
+	float xzise = (float)(prop2 / 3.8)* CartaWidth;
+	float ysize = (float)(prop2 / 3.8)* CartaHeight;
 	Carta* oCar = new Carta(targetList);
 	if (indice == 1){
 		oCar->init(20, 20, nroCarta);
@@ -104,21 +108,38 @@ void ManoScene::AddCarta(int indice, int nroCarta){
 	else if (indice == 2){
 		oCar->init(20, 25, nroCarta);
 	}
-	else if (indice ==3) {
+	else if (indice == 3) {
 		oCar->init(20, 30, nroCarta);
 	}
 	else{
 		oCar->init(50 + xzise, 20, nroCarta);
 		xzise = (prop2 / 10)* (float)CartaWidth;
 		ysize = (prop2 / 10)* (float)CartaHeight;
-		
+
 	}
 	oCar->SetSize(CIwFVec2(xzise, ysize));
 	imagenes.insert(std::pair<int, Carta *>(indice, oCar));
-	
-	if (indice!=4)
-		gDragDropManager->Draggables.push_back(imagenes[indice]);
-	
 
+	if (indice != 4)
+		gDragDropManager->Draggables.push_back(imagenes[indice]);
+
+
+
+}
+
+void ManoScene::init(int mano[3], int muestra){
+
+	targetList = new DropTargetList;
+	float propPozo = (float)Iw2DGetSurfaceWidth() / PozoWidth;
+	float xpozosize = (propPozo / 6) * PozoWidth;
+
+	target = new BoxTarget("Pozo", CIwFVec2((float)Iw2DGetSurfaceWidth() - xpozosize - 10, (float)Iw2DGetSurfaceHeight() - xpozosize - 10));
+	target->SetSize(CIwFVec2(xpozosize, xpozosize));
+	targetList->Add(target);
+
+	for (int i = 0; i < 3; i++){
+		AddCarta(i + 1, mano[i]);
+	}
+	AddCarta(4, muestra);
 
 }

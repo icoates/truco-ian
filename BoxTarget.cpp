@@ -2,18 +2,19 @@
 
 BoxTarget::BoxTarget(std::string imagen, CIwFVec2 vetor)
 {
-	Pozo = Iw2DCreateImage(imagen.c_str());
+	if (imagen == "Pozo")
+		Pozo = gpResources->getPozo();
 	Position = vetor;
+	Size = CIwFVec2(Pozo->GetWidth(), Pozo->GetHeight());
 }
 
 
 BoxTarget::~BoxTarget()
 {
-	if (Pozo !=NULL)
-		delete Pozo;
+	
 }
 
 void BoxTarget::Render(){
-	Iw2DDrawImage(Pozo, Position);
+	Iw2DDrawImage(Pozo, Position,Size);
 }
 

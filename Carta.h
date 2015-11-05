@@ -1,7 +1,7 @@
 #pragma once
 
 #include "DragDrop.h"
-#include "Resources.h"
+
 
 #define RevesWidth	57.0;
 #define RevesHeight	84.0;
@@ -9,12 +9,18 @@
 #define MasoHeight	51;
 #define CartaWidth	144;
 #define CartaHeight 226;
+#define PozoWidth	56;
+const int RefreshWidth = 256;
+
+const int CodMazo = 41;
+const int CodReves = 0;
+const int CodRefresh = 42;
 
 class Carta : public Draggable
 {
 private:
 	int nroCarta;
-	int nroRot=0;
+	int nroRot = 0;
 	bool showCarta;
 	//std::string strPath;
 	CIwFVec2 size;
@@ -56,7 +62,6 @@ public:
 		nroRot = pRot;
 	}
 	//Funciones
-	void Render();	
+	void Render();
 	void SetTransformation(CIw2DImageTransform 	pTransform);
 };
-
