@@ -24,6 +24,8 @@ private:
 	void SetReparteSiguiente();
 	int nroJugadorReparte();
 	std::string GetNombreIndex(int nro);
+
+	bool TerminaMano();
 public:
 	GameController();
 	~GameController(); 

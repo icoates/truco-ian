@@ -62,6 +62,8 @@ void Scene::SetParamBean(int jugador, int carta){
 
 void Scene::ResetAction(){
 	action = false;
-	if (param!=NULL)
+	if (param){
 		delete param;
+		param = 0;
+	}
 }

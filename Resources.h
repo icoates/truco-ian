@@ -1,5 +1,6 @@
 #pragma once
 #include "Iw2D.h"
+#include "s3eDialog.h"
 
 class Resources
 {
@@ -13,7 +14,10 @@ private:
 	CIw2DImage * mesa;
 	CIw2DImage * fieltro;
 	CIw2DImage * refresh;
-	CIw2DImage * Pozo;
+	CIw2DImage * pozo;
+	CIw2DImage * volver;
+	CIw2DImage * salida;
+	
 	//	CIw2DFont * Font;
 	void init();
 public:
@@ -28,7 +32,10 @@ public:
 	CIw2DImage * getMesa(){ return mesa; }
 	CIw2DImage * getFieltro(){ return fieltro; }
 	CIw2DImage * getRefresh() { return refresh; }
-	CIw2DImage * getPozo() { return Pozo; }
+	CIw2DImage * getPozo() { return pozo; }
+	CIw2DImage * getVolver() { return volver; }
+	CIw2DImage * getSalida() { return salida; }
+	
 	//CIw2DFont * getFont() { return Font; }
 };
 

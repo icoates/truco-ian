@@ -6,13 +6,13 @@ GameController::GameController()
 {
 	//Esto en realidad se deberá hacer con las comunicación a efectos de hacer pruebas se pone aquí
 	currentPlayer = new Player("Ian", 3, false);
-	jugadores.insert(std::pair<int, Player *>(1, currentPlayer));
+	jugadores.insert(std::pair<int, Player *>(3, currentPlayer));
 	Player * temp = new Player("Ricca", 1, false);
-	jugadores.insert(std::pair<int, Player *>(2, temp));
+	jugadores.insert(std::pair<int, Player *>(1, temp));
 	temp = new Player("Peter", 4, false);
-	jugadores.insert(std::pair<int, Player *>(3, temp));
-	temp = new Player("Taru", 2, true);
 	jugadores.insert(std::pair<int, Player *>(4, temp));
+	temp = new Player("Taru", 2, true);
+	jugadores.insert(std::pair<int, Player *>(2, temp));
 
 	if (!gpGameState)
 		gpGameState = GameState::Singleton();
@@ -78,6 +78,16 @@ int GameController::GetNroJugadorRelativo(int nroJugador){
 	return 0;
 }
 
+bool GameController::TerminaMano(){
+	
+	if (!jugadores.find(2)->second->GetJugandoMano() && !jugadores.find(4)->second->GetJugandoMano())
+		return true;
+	if (!jugadores.find(1)->second->GetJugandoMano() && !jugadores.find(3)->second->GetJugandoMano())
+		return true;
+
+	return false;
+}
+
 void GameController::TirarCarta(int jugador, int carta){
 	SceneParamBean * scm = new SceneParamBean();
 	scm->SetPlayer(GetNroJugadorRelativo(jugador));
@@ -102,27 +112,39 @@ void GameController::Update(){
 			return;
 		}
 		else if (m_scenes[currentScene]->GetAction() && currentScene == "mano"){
-			m_scenes["mesa"]->DoAction(m_scenes[currentScene]->GetParamBean());
-			tirada++;
-			if (tirada == 1){
-				TirarCarta(1, maso[38]);
-				TirarCarta(2, maso[37]);
-				TirarCarta(4, maso[36]);
-			}
-			else if (tirada == 2){
-				TirarCarta(1, maso[34]);
-				TirarCarta(2, maso[33]);
-				TirarCarta(4, maso[32]);
+			if (m_scenes[currentScene]->GetParamBean()){
+				m_scenes["mesa"]->DoAction(m_scenes[currentScene]->GetParamBean());
+				if (m_scenes[currentScene]->GetParamBean()->GetCarta() == -1){
+					// si la carta es -1 es que se fue
+					jugadores.find(currentPlayer->GetNroJugador())->second->SetJugandoMano(false);									
+					//((ManoScene *)m_scenes[currentScene])->LimpiarMano();
+				}
+				tirada++;
+				if (tirada == 1){
+					TirarCarta(1, maso[38]);
+					TirarCarta(2, maso[37]);
+					TirarCarta(4, maso[36]);
+				}
+				else if (tirada == 2){
+					TirarCarta(1, maso[34]);
+					TirarCarta(2, maso[33]);
+					TirarCarta(4, maso[32]);
+				}
+				else{
+					TirarCarta(1, maso[30]);
+					TirarCarta(2, maso[29]);
+					TirarCarta(4, maso[28]);
+				}
+				//		TirarCarta(m_scenes[currentScene]->GetParamBean());
+				m_scenes[currentScene]->ResetAction();
+				currentScene = "mesa";
+				return;
 			}
 			else{
-				TirarCarta(1, maso[30]);
-				TirarCarta(2, maso[29]);
-				TirarCarta(4, maso[28]);
+				m_scenes[currentScene]->ResetAction();
+				currentScene = "mesa";
+				return;
 			}
-			//		TirarCarta(m_scenes[currentScene]->GetParamBean());
-			m_scenes[currentScene]->ResetAction();
-			currentScene = "mesa";
-			return;
 		}
 	}
 	else if (gpGameState->GetEstado() == TerminoMano){

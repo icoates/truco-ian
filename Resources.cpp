@@ -13,7 +13,10 @@ void Resources::init(){
 	mesa = Iw2DCreateImage("mesa.png");
 	fieltro = Iw2DCreateImage("fieltro2.jpg");
 	refresh = Iw2DCreateImage("refresh.png");
-	Pozo = Iw2DCreateImage("abrir.png");
+	pozo = Iw2DCreateImage("abrir2.png");
+	volver = Iw2DCreateImage("volvermesa.png");
+	salida = Iw2DCreateImage("salida.png");
+	
 	//Font = Iw2DCreateFont("fonts/font.gxfont");
 }
 
@@ -35,7 +38,10 @@ void Resources::DestroySingleton(){
 	delete fieltro;
 	delete reves;
 	delete refresh;
-	delete Pozo;
+	delete pozo;
+	delete volver;
+	delete salida;
+
 	//	delete Font;
 	delete gpResources;
 	gpResources = 0;

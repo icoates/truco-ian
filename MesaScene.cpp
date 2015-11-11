@@ -162,10 +162,25 @@ void MesaScene::Render(){
 bool MesaScene::HitTest(float x, float y){
 
 	
-	
+	std::map<unsigned int, Carta *>::iterator it = m_cartas.find(3);
+	if (it != m_cartas.end()){
+		if (it->second->IsInside(CIwFVec2(x, y)))
+			return true;
+	}
 
-	if (x >= xmin && x <= xmax && y >= ymin && y <= ymax)
-		return true;
+	it = m_cartas.find(2);
+	if (it != m_cartas.end()){
+		if (it->second->IsInside(CIwFVec2(x, y)))
+			return true;
+	}
+
+	it = m_cartas.find(1);
+	if (it != m_cartas.end()){
+		if (it->second->IsInside(CIwFVec2(x, y)))
+			return true;
+	}
+	//if (x >= xmin && x <= xmax && y >= ymin && y <= ymax)
+	//	return true;
 	return false;
 }
 
@@ -225,6 +240,26 @@ void MesaScene::CleanUp(){
 	LimpiarMesa();
 }
 
+void MesaScene::Sefue(int jugador){
+
+	int cMax = jugador * 3;
+
+	std::map<unsigned int, Carta *>::iterator it = m_cartas.find(cMax);
+	if (it != m_cartas.end()){
+		delete it->second;
+		m_cartas.erase(cMax);
+	}
+	it = m_cartas.find(cMax-1);
+	if (it != m_cartas.end()){
+		delete it->second;
+		m_cartas.erase(cMax-1);
+	}
+	it = m_cartas.find(cMax-2);
+	if (it != m_cartas.end()){
+		delete it->second;
+		m_cartas.erase(cMax-2);
+	}
+}
 
 void MesaScene::DoAction(SceneParamBean *scm){
 	
@@ -233,8 +268,10 @@ void MesaScene::DoAction(SceneParamBean *scm){
 	
 	Carta * cTemp = new Carta(NULL);
 
-	
-	if (scm->GetPlayer() == 1){
+	if (scm->GetCarta() == -1){
+		Sefue(1);		
+		delete cTemp;
+	}else if (scm->GetPlayer() == 1){
 		cTemp->init(xmedio + 20, yCartaAbajo, scm->GetCarta());
 		cTemp->SetSize(CIwFVec2(xzise, ysize));
 		std::map<unsigned int, Carta *>::iterator it = m_cartas.find(20);

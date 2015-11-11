@@ -40,4 +40,5 @@ public:
 	bool HitTest(float, float); 
 	void DoAction(SceneParamBean * spm);
 	void Update();
+	void Sefue(int jugador);
 };
